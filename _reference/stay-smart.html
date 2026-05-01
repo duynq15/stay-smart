@@ -1,0 +1,2113 @@
+<!DOCTYPE html>
+<html lang="vi">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>STAY-SMART — Đặt phòng khách sạn thông minh</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,500;0,9..144,600;0,9..144,700;1,9..144,500&family=Geist:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+  /* ========================
+     Design tokens
+     ======================== */
+  :root {
+    --ink-900: #0b1410;
+    --ink-700: #1f2a25;
+    --ink-500: #4a5751;
+    --ink-300: #8a9893;
+    --ink-100: #d8ddd8;
+    --paper:   #f5f1e8;
+    --paper-2: #efe9dc;
+    --cream:   #fbf8f1;
+    --emerald-900: #0a3d2e;
+    --emerald-700: #14724f;
+    --emerald-500: #1f9b6a;
+    --emerald-300: #6ed1a8;
+    --gold:    #c4965a;
+    --rust:    #b85c3c;
+    --shadow-sm: 0 1px 2px rgba(11,20,16,.06), 0 0 0 1px rgba(11,20,16,.04);
+    --shadow-md: 0 8px 24px -8px rgba(11,20,16,.12), 0 2px 6px rgba(11,20,16,.06);
+    --shadow-lg: 0 24px 48px -16px rgba(11,20,16,.18), 0 4px 12px rgba(11,20,16,.08);
+    --serif: 'Fraunces', Georgia, serif;
+    --sans:  'Geist', -apple-system, sans-serif;
+  }
+
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: var(--sans);
+    background: var(--cream);
+    color: var(--ink-900);
+    line-height: 1.5;
+    -webkit-font-smoothing: antialiased;
+    overflow-x: hidden;
+  }
+  button { font-family: inherit; cursor: pointer; border: none; background: none; color: inherit; }
+  input, select, textarea { font-family: inherit; }
+  img { display: block; max-width: 100%; }
+  a { color: inherit; text-decoration: none; }
+
+  /* ========================
+     Header
+     ======================== */
+  .nav {
+    position: sticky; top: 0; z-index: 50;
+    background: rgba(251,248,241,.85);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid rgba(11,20,16,.06);
+  }
+  .nav-inner {
+    max-width: 1280px; margin: 0 auto;
+    padding: 18px 32px;
+    display: flex; align-items: center; justify-content: space-between;
+  }
+  .logo {
+    display: flex; align-items: center; gap: 10px;
+    font-family: var(--serif);
+    font-weight: 600;
+    font-size: 22px;
+    letter-spacing: -0.02em;
+    color: var(--emerald-900);
+  }
+  .logo-mark {
+    width: 32px; height: 32px;
+    background: var(--emerald-700);
+    border-radius: 8px;
+    display: grid; place-items: center;
+    color: var(--cream);
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 18px;
+    transform: rotate(-3deg);
+  }
+  .logo span.dot { color: var(--rust); }
+  .nav-links { display: flex; gap: 28px; font-size: 14px; color: var(--ink-700); }
+  .nav-links a { transition: color .2s; }
+  .nav-links a:hover { color: var(--emerald-700); }
+  .nav-auth { display: flex; gap: 8px; align-items: center; }
+  .btn {
+    padding: 10px 18px;
+    border-radius: 999px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all .2s ease;
+    display: inline-flex; align-items: center; gap: 6px;
+  }
+  .btn-ghost { color: var(--ink-700); }
+  .btn-ghost:hover { background: rgba(11,20,16,.05); }
+  .btn-primary {
+    background: var(--ink-900);
+    color: var(--cream);
+  }
+  .btn-primary:hover { background: var(--emerald-700); transform: translateY(-1px); }
+  .btn-emerald {
+    background: var(--emerald-700);
+    color: var(--cream);
+  }
+  .btn-emerald:hover { background: var(--emerald-900); }
+
+  /* ========================
+     Hero
+     ======================== */
+  .hero {
+    position: relative;
+    padding: 80px 32px 60px;
+    max-width: 1280px;
+    margin: 0 auto;
+    overflow: hidden;
+  }
+  .hero-bg {
+    position: absolute; inset: 0; z-index: 0;
+    background:
+      radial-gradient(ellipse 80% 50% at 50% 0%, rgba(31,155,106,.08), transparent 70%),
+      radial-gradient(ellipse 40% 30% at 90% 30%, rgba(196,150,90,.12), transparent 60%);
+    pointer-events: none;
+  }
+  .hero-grid {
+    position: relative; z-index: 1;
+    display: grid;
+    grid-template-columns: 1.1fr 1fr;
+    gap: 48px;
+    align-items: center;
+  }
+  .hero-eyebrow {
+    display: inline-flex; align-items: center; gap: 8px;
+    padding: 6px 12px;
+    background: rgba(31,155,106,.1);
+    color: var(--emerald-900);
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    margin-bottom: 24px;
+  }
+  .hero-eyebrow::before {
+    content: ''; width: 6px; height: 6px;
+    background: var(--emerald-500);
+    border-radius: 50%;
+    animation: pulse 2s ease-in-out infinite;
+  }
+  @keyframes pulse {
+    0%, 100% { opacity: 1; transform: scale(1); }
+    50% { opacity: .6; transform: scale(1.4); }
+  }
+  .hero h1 {
+    font-family: var(--serif);
+    font-size: clamp(40px, 5.5vw, 72px);
+    font-weight: 500;
+    line-height: 1.02;
+    letter-spacing: -0.03em;
+    color: var(--ink-900);
+    margin-bottom: 20px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--emerald-700);
+    font-weight: 400;
+  }
+  .hero p.lede {
+    font-size: 17px;
+    color: var(--ink-500);
+    max-width: 480px;
+    margin-bottom: 32px;
+    line-height: 1.6;
+  }
+
+  /* Search bar */
+  .search-card {
+    background: var(--cream);
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 20px;
+    padding: 8px;
+    box-shadow: var(--shadow-md);
+    display: grid;
+    grid-template-columns: 1.5fr 1fr 1fr auto;
+    gap: 0;
+    align-items: stretch;
+    max-width: 580px;
+  }
+  .search-field {
+    padding: 14px 18px;
+    border-right: 1px solid rgba(11,20,16,.06);
+    display: flex; flex-direction: column; gap: 2px;
+    min-width: 0;
+  }
+  .search-field:last-of-type { border-right: none; }
+  .search-field label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-500);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+  .search-field input {
+    border: none; outline: none; background: transparent;
+    font-size: 14px;
+    color: var(--ink-900);
+    font-weight: 500;
+    width: 100%;
+  }
+  .search-card .btn {
+    margin: 6px;
+    padding: 0 22px;
+  }
+
+  .hero-stats {
+    display: flex; gap: 32px; margin-top: 36px;
+  }
+  .hero-stat strong {
+    display: block;
+    font-family: var(--serif);
+    font-size: 28px;
+    font-weight: 500;
+    color: var(--emerald-700);
+    letter-spacing: -0.02em;
+  }
+  .hero-stat span {
+    font-size: 13px;
+    color: var(--ink-500);
+  }
+
+  /* Hero visual */
+  .hero-visual {
+    position: relative;
+    aspect-ratio: 4/5;
+    max-height: 600px;
+  }
+  .hero-img {
+    position: absolute;
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-lg);
+  }
+  .hero-img-1 {
+    top: 0; left: 0;
+    width: 65%; aspect-ratio: 3/4;
+    z-index: 2;
+    transform: rotate(-2deg);
+  }
+  .hero-img-2 {
+    bottom: 0; right: 0;
+    width: 60%; aspect-ratio: 4/3;
+    z-index: 1;
+    transform: rotate(3deg);
+  }
+  .hero-img img { width: 100%; height: 100%; object-fit: cover; }
+
+  .hero-badge {
+    position: absolute;
+    bottom: 30%; left: -10px;
+    z-index: 3;
+    background: var(--cream);
+    padding: 14px 18px;
+    border-radius: 14px;
+    box-shadow: var(--shadow-md);
+    display: flex; align-items: center; gap: 12px;
+    font-size: 13px;
+    transform: rotate(-4deg);
+  }
+  .hero-badge .ai-dot {
+    width: 36px; height: 36px;
+    background: linear-gradient(135deg, var(--emerald-500), var(--emerald-900));
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--cream);
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+  }
+
+  /* ========================
+     Section: Quick suggestions
+     ======================== */
+  section { padding: 60px 32px; max-width: 1280px; margin: 0 auto; }
+  .section-head {
+    display: flex; justify-content: space-between; align-items: end;
+    margin-bottom: 32px;
+    flex-wrap: wrap; gap: 16px;
+  }
+  .section-head h2 {
+    font-family: var(--serif);
+    font-size: clamp(28px, 3.5vw, 42px);
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .section-head h2 em { font-style: italic; color: var(--emerald-700); }
+  .section-head p {
+    color: var(--ink-500);
+    font-size: 15px;
+    max-width: 360px;
+  }
+
+  .hotel-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 20px;
+  }
+  .hotel-card {
+    background: var(--cream);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: var(--shadow-sm);
+    transition: all .3s ease;
+    cursor: pointer;
+    border: 1px solid rgba(11,20,16,.04);
+  }
+  .hotel-card:hover {
+    transform: translateY(-4px);
+    box-shadow: var(--shadow-lg);
+    border-color: var(--emerald-300);
+  }
+  .hotel-card .img-wrap {
+    position: relative;
+    aspect-ratio: 4/3;
+    overflow: hidden;
+  }
+  .hotel-card .img-wrap img {
+    width: 100%; height: 100%; object-fit: cover;
+    transition: transform .6s ease;
+  }
+  .hotel-card:hover .img-wrap img { transform: scale(1.05); }
+  .hotel-card .vr-badge {
+    position: absolute; top: 12px; left: 12px;
+    background: rgba(11,20,16,.8);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    padding: 6px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .hotel-card .price-badge {
+    position: absolute; top: 12px; right: 12px;
+    background: var(--cream);
+    padding: 6px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 600;
+    color: var(--emerald-900);
+  }
+  .hotel-card .info { padding: 16px 18px 18px; }
+  .hotel-card .info h3 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+    letter-spacing: -0.01em;
+  }
+  .hotel-card .info .loc {
+    font-size: 13px; color: var(--ink-500);
+    display: flex; align-items: center; gap: 4px;
+    margin-bottom: 10px;
+  }
+  .hotel-card .info .meta {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-top: 10px;
+    border-top: 1px dashed rgba(11,20,16,.1);
+  }
+  .hotel-card .rating {
+    display: flex; align-items: center; gap: 4px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .hotel-card .price {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+    color: var(--ink-900);
+  }
+  .hotel-card .price small { font-size: 11px; color: var(--ink-500); font-weight: 400; }
+
+  /* ========================
+     Combo tours
+     ======================== */
+  .combo-grid {
+    display: grid;
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 20px;
+    grid-template-rows: 240px 240px;
+  }
+  .combo-card {
+    border-radius: 16px;
+    overflow: hidden;
+    position: relative;
+    cursor: pointer;
+    box-shadow: var(--shadow-sm);
+    transition: transform .3s;
+  }
+  .combo-card:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+  .combo-card img { width: 100%; height: 100%; object-fit: cover; }
+  .combo-card::after {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(to top, rgba(11,20,16,.85) 0%, rgba(11,20,16,.2) 50%, transparent 80%);
+  }
+  .combo-card .label {
+    position: absolute; bottom: 0; left: 0; right: 0;
+    padding: 20px;
+    color: var(--cream);
+    z-index: 2;
+  }
+  .combo-card .label small {
+    display: block;
+    font-size: 11px;
+    text-transform: uppercase;
+    letter-spacing: 0.1em;
+    color: var(--emerald-300);
+    margin-bottom: 6px;
+  }
+  .combo-card .label h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .combo-card.large { grid-row: span 2; }
+  .combo-card.large .label h3 { font-size: 32px; }
+
+  /* ========================
+     Filter bar (results page)
+     ======================== */
+  .results-page { display: none; padding-top: 30px; }
+  .results-page.active { display: block; }
+  .filter-bar {
+    background: var(--cream);
+    border: 1px solid rgba(11,20,16,.06);
+    border-radius: 16px;
+    padding: 20px 24px;
+    margin-bottom: 28px;
+    display: flex; gap: 16px; flex-wrap: wrap; align-items: center;
+    box-shadow: var(--shadow-sm);
+  }
+  .filter-group { display: flex; flex-direction: column; gap: 4px; }
+  .filter-group label {
+    font-size: 11px;
+    font-weight: 600;
+    text-transform: uppercase;
+    color: var(--ink-500);
+    letter-spacing: 0.04em;
+  }
+  .filter-group select, .filter-group input {
+    border: 1px solid rgba(11,20,16,.1);
+    background: var(--paper);
+    border-radius: 8px;
+    padding: 8px 12px;
+    font-size: 13px;
+    color: var(--ink-900);
+    outline: none;
+    min-width: 130px;
+  }
+  .filter-group select:focus { border-color: var(--emerald-500); }
+  .filter-chips { display: flex; gap: 8px; flex-wrap: wrap; align-items: center; }
+  .chip {
+    padding: 8px 14px;
+    background: var(--paper);
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 999px;
+    font-size: 13px;
+    transition: all .2s;
+  }
+  .chip:hover, .chip.active {
+    background: var(--emerald-700);
+    color: var(--cream);
+    border-color: var(--emerald-700);
+  }
+
+  /* ========================
+     Hotel detail modal
+     ======================== */
+  .modal-overlay {
+    position: fixed; inset: 0;
+    background: rgba(11,20,16,.5);
+    backdrop-filter: blur(4px);
+    z-index: 100;
+    display: none;
+    align-items: center; justify-content: center;
+    padding: 20px;
+  }
+  .modal-overlay.active { display: flex; animation: fadeIn .25s ease; }
+  @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+  .modal {
+    background: var(--cream);
+    border-radius: 20px;
+    max-width: 900px;
+    width: 100%;
+    max-height: 90vh;
+    overflow-y: auto;
+    position: relative;
+    box-shadow: var(--shadow-lg);
+    animation: slideUp .35s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes slideUp { from { transform: translateY(30px); opacity: 0; } to { transform: translateY(0); opacity: 1; } }
+  .modal-close {
+    position: absolute; top: 16px; right: 16px;
+    width: 36px; height: 36px;
+    background: rgba(11,20,16,.6);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    border-radius: 50%;
+    z-index: 5;
+    display: grid; place-items: center;
+    transition: background .2s;
+  }
+  .modal-close:hover { background: var(--ink-900); }
+  .modal-hero {
+    position: relative;
+    height: 320px;
+    overflow: hidden;
+  }
+  .modal-hero img { width: 100%; height: 100%; object-fit: cover; }
+  .vr-toggle {
+    position: absolute; bottom: 16px; left: 16px;
+    background: rgba(11,20,16,.8);
+    backdrop-filter: blur(8px);
+    color: var(--cream);
+    padding: 10px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    display: flex; align-items: center; gap: 8px;
+  }
+  .modal-body { padding: 28px 32px 32px; }
+  .modal-title-row {
+    display: flex; justify-content: space-between; align-items: start;
+    margin-bottom: 8px; gap: 16px;
+  }
+  .modal-body h2 {
+    font-family: var(--serif);
+    font-size: 32px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    line-height: 1.1;
+  }
+  .modal-body .loc-row {
+    color: var(--ink-500);
+    font-size: 14px;
+    margin-bottom: 20px;
+    display: flex; align-items: center; gap: 6px;
+  }
+  .modal-amenities {
+    display: flex; gap: 20px; flex-wrap: wrap;
+    padding: 16px 0;
+    border-top: 1px solid rgba(11,20,16,.08);
+    border-bottom: 1px solid rgba(11,20,16,.08);
+    margin-bottom: 24px;
+  }
+  .amenity {
+    display: flex; align-items: center; gap: 6px;
+    font-size: 13px;
+    color: var(--ink-700);
+  }
+
+  .room-list { display: flex; flex-direction: column; gap: 12px; }
+  .room-card {
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 12px;
+    padding: 16px 20px;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 16px;
+    align-items: center;
+    transition: border-color .2s;
+  }
+  .room-card:hover { border-color: var(--emerald-500); }
+  .room-card h4 {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 500;
+    margin-bottom: 4px;
+  }
+  .room-card .room-meta {
+    font-size: 13px;
+    color: var(--ink-500);
+  }
+  .room-card .room-price {
+    text-align: right;
+  }
+  .room-card .room-price .num {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink-900);
+    display: block;
+  }
+  .room-card .room-price small {
+    font-size: 11px; color: var(--ink-500);
+  }
+  .room-card .book-btn {
+    margin-top: 8px;
+    padding: 8px 16px;
+    background: var(--emerald-700);
+    color: var(--cream);
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    transition: all .2s;
+  }
+  .room-card .book-btn:hover { background: var(--emerald-900); }
+
+  /* ========================
+     Checkout / Payment
+     ======================== */
+  .checkout-grid {
+    display: grid;
+    grid-template-columns: 1fr 380px;
+    gap: 32px;
+    margin-top: 16px;
+  }
+  .checkout-form, .checkout-summary {
+    background: var(--cream);
+    border-radius: 16px;
+    padding: 28px;
+    border: 1px solid rgba(11,20,16,.06);
+  }
+  .checkout-form h3, .checkout-summary h3 {
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 500;
+    margin-bottom: 20px;
+  }
+  .form-row {
+    display: grid; grid-template-columns: 1fr 1fr; gap: 14px;
+    margin-bottom: 14px;
+  }
+  .form-field { display: flex; flex-direction: column; gap: 6px; }
+  .form-field.full { grid-column: 1 / -1; }
+  .form-field label {
+    font-size: 12px;
+    font-weight: 500;
+    color: var(--ink-700);
+  }
+  .form-field input, .form-field select {
+    border: 1px solid rgba(11,20,16,.12);
+    background: var(--paper);
+    border-radius: 10px;
+    padding: 12px 14px;
+    font-size: 14px;
+    outline: none;
+    transition: border-color .2s;
+  }
+  .form-field input:focus, .form-field select:focus { border-color: var(--emerald-500); }
+
+  .pay-methods { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 18px; }
+  .pay-method {
+    border: 2px solid rgba(11,20,16,.08);
+    border-radius: 12px;
+    padding: 14px;
+    text-align: center;
+    font-size: 12px;
+    font-weight: 500;
+    cursor: pointer;
+    transition: all .2s;
+  }
+  .pay-method.active { border-color: var(--emerald-500); background: rgba(31,155,106,.05); }
+  .pay-method-icon { font-size: 22px; margin-bottom: 4px; }
+
+  .summary-row {
+    display: flex; justify-content: space-between;
+    padding: 8px 0;
+    font-size: 14px;
+    color: var(--ink-700);
+  }
+  .summary-row.total {
+    border-top: 1px solid rgba(11,20,16,.1);
+    margin-top: 8px;
+    padding-top: 14px;
+    font-family: var(--serif);
+    font-size: 22px;
+    font-weight: 600;
+    color: var(--ink-900);
+  }
+  .summary-hotel {
+    display: flex; gap: 12px;
+    padding: 12px;
+    background: var(--paper);
+    border-radius: 12px;
+    margin-bottom: 16px;
+  }
+  .summary-hotel img { width: 70px; height: 70px; border-radius: 10px; object-fit: cover; }
+  .summary-hotel h4 { font-family: var(--serif); font-size: 15px; font-weight: 500; }
+  .summary-hotel small { font-size: 12px; color: var(--ink-500); }
+
+  /* ========================
+     Confirmation
+     ======================== */
+  .confirm-page {
+    display: none;
+    text-align: center;
+    padding: 60px 32px 80px;
+    max-width: 720px;
+    margin: 0 auto;
+  }
+  .confirm-page.active { display: block; }
+  .check-circle {
+    width: 90px; height: 90px;
+    margin: 0 auto 28px;
+    background: var(--emerald-500);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    color: var(--cream);
+    box-shadow: 0 0 0 12px rgba(31,155,106,.12);
+    animation: bounceIn .6s cubic-bezier(.2,.8,.2,1);
+  }
+  @keyframes bounceIn {
+    0% { transform: scale(0); opacity: 0; }
+    50% { transform: scale(1.15); }
+    100% { transform: scale(1); opacity: 1; }
+  }
+  .confirm-page h1 {
+    font-family: var(--serif);
+    font-size: 42px;
+    font-weight: 500;
+    letter-spacing: -0.02em;
+    margin-bottom: 8px;
+  }
+  .confirm-page h1 em { font-style: italic; color: var(--emerald-700); }
+  .confirm-page > p {
+    color: var(--ink-500); margin-bottom: 32px;
+  }
+  .confirm-card {
+    background: var(--cream);
+    border: 1px solid rgba(11,20,16,.06);
+    border-radius: 16px;
+    padding: 28px 32px;
+    text-align: left;
+    box-shadow: var(--shadow-sm);
+    margin-bottom: 24px;
+  }
+  .confirm-id {
+    display: flex; justify-content: space-between; align-items: center;
+    padding-bottom: 16px;
+    border-bottom: 1px dashed rgba(11,20,16,.15);
+    margin-bottom: 16px;
+  }
+  .confirm-id strong {
+    font-family: var(--serif);
+    font-size: 18px;
+    font-weight: 600;
+  }
+  .confirm-id small {
+    color: var(--ink-500); font-size: 12px;
+    display: block;
+  }
+  .confirm-id .code {
+    background: var(--emerald-900);
+    color: var(--cream);
+    padding: 6px 14px;
+    border-radius: 8px;
+    font-family: var(--serif);
+    font-weight: 600;
+    letter-spacing: 0.05em;
+  }
+  .confirm-row {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 12px 0;
+  }
+  .confirm-cell label {
+    font-size: 11px;
+    font-weight: 600;
+    color: var(--ink-500);
+    text-transform: uppercase;
+    letter-spacing: 0.04em;
+    display: block;
+    margin-bottom: 4px;
+  }
+  .confirm-cell strong {
+    font-size: 15px;
+    font-weight: 500;
+  }
+  .confirm-actions { display: flex; gap: 12px; justify-content: center; flex-wrap: wrap; }
+
+  /* ========================
+     CHATBOT
+     ======================== */
+  .chat-fab {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 80;
+    cursor: pointer;
+    transition: transform .3s;
+  }
+  .chat-fab:hover { transform: scale(1.05); }
+  .chat-fab.hide { display: none; }
+  .chat-bubble {
+    background: var(--cream);
+    border-radius: 999px;
+    padding: 12px 18px 12px 12px;
+    box-shadow: var(--shadow-lg);
+    display: flex; align-items: center; gap: 12px;
+    border: 1px solid rgba(11,20,16,.06);
+    animation: floaty 4s ease-in-out infinite;
+  }
+  @keyframes floaty {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(-6px); }
+  }
+  .chat-avatar {
+    width: 48px; height: 48px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, var(--emerald-500), var(--emerald-900));
+    display: grid; place-items: center;
+    color: var(--cream);
+    font-family: var(--serif);
+    font-style: italic;
+    font-weight: 600;
+    font-size: 22px;
+    position: relative;
+    box-shadow: inset 0 -3px 6px rgba(0,0,0,.15);
+  }
+  .chat-avatar::after {
+    content: '';
+    position: absolute;
+    bottom: 2px; right: 2px;
+    width: 12px; height: 12px;
+    background: var(--emerald-300);
+    border: 2px solid var(--cream);
+    border-radius: 50%;
+  }
+  .chat-text {
+    font-size: 13px;
+    line-height: 1.3;
+  }
+  .chat-text strong { display: block; font-weight: 600; color: var(--ink-900); font-size: 14px; }
+  .chat-text small { color: var(--ink-500); }
+
+  /* Chat panel */
+  .chat-panel {
+    position: fixed;
+    bottom: 24px; right: 24px;
+    z-index: 90;
+    width: 400px;
+    max-width: calc(100vw - 32px);
+    height: 620px;
+    max-height: calc(100vh - 48px);
+    background: var(--cream);
+    border-radius: 24px;
+    box-shadow: var(--shadow-lg);
+    display: none;
+    flex-direction: column;
+    overflow: hidden;
+    border: 1px solid rgba(11,20,16,.08);
+  }
+  .chat-panel.active { display: flex; animation: chatPop .35s cubic-bezier(.2,.8,.2,1); }
+  .chat-panel.fullscreen {
+    inset: 0;
+    width: 100%; height: 100%;
+    max-width: 100%; max-height: 100%;
+    border-radius: 0;
+    bottom: 0; right: 0;
+  }
+  @keyframes chatPop {
+    from { transform: translateY(20px) scale(.96); opacity: 0; }
+    to { transform: translateY(0) scale(1); opacity: 1; }
+  }
+
+  .chat-header {
+    background: var(--ink-900);
+    color: var(--cream);
+    padding: 16px 20px;
+    display: flex; align-items: center; gap: 12px;
+    position: relative;
+  }
+  .chat-header::before {
+    content: '';
+    position: absolute; left: 0; right: 0; bottom: 0;
+    height: 3px;
+    background: linear-gradient(90deg, var(--emerald-500), var(--gold), var(--emerald-500));
+  }
+  .chat-header .chat-avatar {
+    width: 40px; height: 40px;
+    font-size: 18px;
+  }
+  .chat-header h4 {
+    font-family: var(--serif);
+    font-weight: 500;
+    font-size: 17px;
+  }
+  .chat-header small {
+    font-size: 12px;
+    color: var(--emerald-300);
+    display: flex; align-items: center; gap: 5px;
+  }
+  .chat-header small::before {
+    content: '';
+    width: 6px; height: 6px;
+    background: var(--emerald-300);
+    border-radius: 50%;
+  }
+  .chat-actions { margin-left: auto; display: flex; gap: 6px; }
+  .chat-icon-btn {
+    width: 32px; height: 32px;
+    border-radius: 8px;
+    color: var(--cream);
+    opacity: .8;
+    transition: all .2s;
+    display: grid; place-items: center;
+  }
+  .chat-icon-btn:hover { background: rgba(255,255,255,.1); opacity: 1; }
+
+  .chat-body {
+    flex: 1;
+    overflow-y: auto;
+    padding: 20px;
+    display: flex; flex-direction: column; gap: 14px;
+    background:
+      radial-gradient(circle at 20% 20%, rgba(31,155,106,.04), transparent 50%),
+      radial-gradient(circle at 80% 80%, rgba(196,150,90,.04), transparent 50%),
+      var(--cream);
+  }
+  .chat-body::-webkit-scrollbar { width: 6px; }
+  .chat-body::-webkit-scrollbar-thumb { background: rgba(11,20,16,.15); border-radius: 3px; }
+
+  .msg {
+    max-width: 85%;
+    display: flex; flex-direction: column; gap: 4px;
+    animation: msgIn .35s ease;
+  }
+  @keyframes msgIn {
+    from { transform: translateY(8px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+  }
+  .msg.bot { align-self: flex-start; }
+  .msg.user { align-self: flex-end; align-items: flex-end; }
+  .msg-bubble {
+    padding: 12px 16px;
+    border-radius: 16px;
+    font-size: 14px;
+    line-height: 1.5;
+  }
+  .msg.bot .msg-bubble {
+    background: var(--paper);
+    color: var(--ink-900);
+    border-bottom-left-radius: 4px;
+  }
+  .msg.user .msg-bubble {
+    background: var(--emerald-700);
+    color: var(--cream);
+    border-bottom-right-radius: 4px;
+  }
+  .msg .time {
+    font-size: 10px;
+    color: var(--ink-500);
+    padding: 0 6px;
+  }
+
+  .typing {
+    display: flex; gap: 4px; padding: 14px 18px;
+    background: var(--paper);
+    border-radius: 16px;
+    border-bottom-left-radius: 4px;
+    width: fit-content;
+  }
+  .typing span {
+    width: 7px; height: 7px;
+    background: var(--ink-300);
+    border-radius: 50%;
+    animation: typing 1.4s infinite;
+  }
+  .typing span:nth-child(2) { animation-delay: .2s; }
+  .typing span:nth-child(3) { animation-delay: .4s; }
+  @keyframes typing {
+    0%, 60%, 100% { transform: translateY(0); opacity: .4; }
+    30% { transform: translateY(-4px); opacity: 1; }
+  }
+
+  /* In-chat hotel cards */
+  .chat-hotels {
+    display: flex; flex-direction: column; gap: 8px;
+    margin-top: 4px;
+  }
+  .chat-hotel-card {
+    background: var(--cream);
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 12px;
+    overflow: hidden;
+    cursor: pointer;
+    transition: all .2s;
+    display: flex;
+  }
+  .chat-hotel-card:hover {
+    border-color: var(--emerald-500);
+    transform: translateX(2px);
+  }
+  .chat-hotel-card img {
+    width: 90px; height: 90px;
+    object-fit: cover;
+    flex-shrink: 0;
+  }
+  .chat-hotel-card .ch-info {
+    padding: 10px 12px;
+    display: flex; flex-direction: column; justify-content: space-between;
+    flex: 1;
+    min-width: 0;
+  }
+  .chat-hotel-card h5 {
+    font-family: var(--serif);
+    font-size: 14px;
+    font-weight: 500;
+    line-height: 1.2;
+  }
+  .chat-hotel-card .ch-loc {
+    font-size: 11px; color: var(--ink-500);
+    overflow: hidden; text-overflow: ellipsis; white-space: nowrap;
+  }
+  .chat-hotel-card .ch-meta {
+    display: flex; justify-content: space-between; align-items: center;
+    font-size: 12px;
+  }
+  .chat-hotel-card .ch-price {
+    font-weight: 600; color: var(--emerald-900);
+    font-family: var(--serif);
+  }
+  .chat-hotel-card .ch-rating {
+    display: flex; align-items: center; gap: 3px;
+    font-size: 11px;
+  }
+
+  /* Quick replies */
+  .quick-replies {
+    display: flex; flex-wrap: wrap; gap: 6px;
+    padding: 0 20px 8px;
+  }
+  .quick-reply {
+    background: var(--cream);
+    border: 1px solid var(--emerald-300);
+    color: var(--emerald-900);
+    padding: 7px 12px;
+    border-radius: 999px;
+    font-size: 12px;
+    font-weight: 500;
+    transition: all .2s;
+  }
+  .quick-reply:hover {
+    background: var(--emerald-700);
+    color: var(--cream);
+    border-color: var(--emerald-700);
+  }
+
+  /* Chat input */
+  .chat-input-area {
+    padding: 14px 16px 16px;
+    border-top: 1px solid rgba(11,20,16,.06);
+    background: var(--cream);
+  }
+  .chat-input-row {
+    display: flex; gap: 8px; align-items: center;
+    background: var(--paper);
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 999px;
+    padding: 6px 6px 6px 16px;
+    transition: border-color .2s;
+  }
+  .chat-input-row:focus-within { border-color: var(--emerald-500); }
+  .chat-input-row input {
+    flex: 1;
+    border: none; outline: none; background: transparent;
+    font-size: 14px;
+    color: var(--ink-900);
+  }
+  .chat-send {
+    width: 36px; height: 36px;
+    background: var(--emerald-700);
+    color: var(--cream);
+    border-radius: 50%;
+    display: grid; place-items: center;
+    transition: all .2s;
+  }
+  .chat-send:hover { background: var(--emerald-900); transform: scale(1.05); }
+
+  /* Restaurant suggestions */
+  .place-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    margin-top: 4px;
+  }
+  .place-card {
+    background: var(--cream);
+    border: 1px solid rgba(11,20,16,.08);
+    border-radius: 10px;
+    overflow: hidden;
+    cursor: pointer;
+  }
+  .place-card img {
+    width: 100%; aspect-ratio: 4/3; object-fit: cover;
+  }
+  .place-card .pc-info { padding: 8px 10px; }
+  .place-card h6 {
+    font-family: var(--serif);
+    font-size: 13px;
+    font-weight: 500;
+    margin-bottom: 2px;
+  }
+  .place-card .pc-tag {
+    font-size: 10px;
+    color: var(--emerald-700);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+  }
+
+  /* yes/no inline */
+  .inline-actions {
+    display: flex; gap: 8px;
+    margin-top: 8px;
+  }
+  .inline-actions button {
+    padding: 8px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+  }
+  .inline-yes { background: var(--emerald-700); color: var(--cream); }
+  .inline-yes:hover { background: var(--emerald-900); }
+  .inline-no { background: var(--paper); color: var(--ink-700); border: 1px solid rgba(11,20,16,.1); }
+  .inline-no:hover { background: var(--ink-100); }
+
+  /* ========================
+     Responsive
+     ======================== */
+  @media (max-width: 900px) {
+    .nav-links { display: none; }
+    .hero { padding: 50px 20px 40px; }
+    .hero-grid { grid-template-columns: 1fr; gap: 32px; }
+    .hero-visual { aspect-ratio: 16/10; max-height: 380px; }
+    .search-card { grid-template-columns: 1fr 1fr; }
+    .search-card .btn { grid-column: 1 / -1; padding: 14px; }
+    .combo-grid { grid-template-columns: 1fr; grid-template-rows: repeat(3, 200px); }
+    .combo-card.large { grid-row: auto; }
+    .checkout-grid { grid-template-columns: 1fr; }
+    .form-row { grid-template-columns: 1fr; }
+    section { padding: 40px 20px; }
+    .nav-inner { padding: 14px 20px; }
+    .chat-fab { bottom: 16px; right: 16px; }
+    .chat-bubble { padding: 10px 14px 10px 10px; }
+    .chat-text strong { font-size: 13px; }
+    .chat-text small { font-size: 11px; }
+    .chat-panel { bottom: 0; right: 0; left: 0; width: 100%; height: 90vh; border-radius: 24px 24px 0 0; }
+    .modal { max-height: 95vh; }
+    .modal-body { padding: 20px; }
+  }
+  @media (max-width: 600px) {
+    .hero-stats { gap: 20px; }
+    .filter-bar { flex-direction: column; align-items: stretch; }
+    .filter-group select, .filter-group input { width: 100%; }
+    .nav-auth .btn-ghost { display: none; }
+    .confirm-row { grid-template-columns: 1fr; }
+    .pay-methods { grid-template-columns: 1fr 1fr; }
+  }
+</style>
+</head>
+<body>
+
+<!-- ============ NAV ============ -->
+<nav class="nav">
+  <div class="nav-inner">
+    <a href="#" class="logo" onclick="goHome(event)">
+      <span class="logo-mark">S</span>
+      STAY-SMART<span class="dot">.</span>
+    </a>
+    <div class="nav-links">
+      <a href="#hotels">Khách sạn</a>
+      <a href="#combos">Combo Tour</a>
+      <a href="#">Khuyến mãi</a>
+      <a href="#">Hỗ trợ</a>
+    </div>
+    <div class="nav-auth">
+      <button class="btn btn-ghost">Đăng nhập</button>
+      <button class="btn btn-primary">Đăng ký</button>
+    </div>
+  </div>
+</nav>
+
+<!-- ============ HOME PAGE ============ -->
+<div id="home-page">
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-bg"></div>
+    <div class="hero-grid">
+      <div class="hero-text">
+        <span class="hero-eyebrow">Trợ lý AI · Hà Nội</span>
+        <h1>Tìm phòng <em>khách sạn</em><br>bằng cuộc trò chuyện.</h1>
+        <p class="lede">Mô tả mong muốn của bạn — vị trí, ngân sách, view yêu thích — STAY-SMART sẽ tìm ra khách sạn phù hợp tại 36 phố phường Hà Nội trong vài giây.</p>
+
+        <div class="search-card">
+          <div class="search-field">
+            <label>Điểm đến</label>
+            <input type="text" placeholder="Hoàn Kiếm, Ba Đình..." value="Hà Nội">
+          </div>
+          <div class="search-field">
+            <label>Nhận phòng</label>
+            <input type="text" placeholder="04/05/2026" value="04/05/2026">
+          </div>
+          <div class="search-field">
+            <label>Khách</label>
+            <input type="text" placeholder="2 người" value="2 người">
+          </div>
+          <button class="btn btn-emerald" onclick="showResults()">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="11" cy="11" r="7"/><path d="m20 20-3.5-3.5"/></svg>
+            Tìm
+          </button>
+        </div>
+
+        <div class="hero-stats">
+          <div class="hero-stat">
+            <strong>1,240+</strong>
+            <span>Khách sạn Hà Nội</span>
+          </div>
+          <div class="hero-stat">
+            <strong>4.9★</strong>
+            <span>Đánh giá AI tư vấn</span>
+          </div>
+          <div class="hero-stat">
+            <strong>30s</strong>
+            <span>Tìm thấy phù hợp</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="hero-visual">
+        <div class="hero-img hero-img-1">
+          <img src="https://images.unsplash.com/photo-1566073771259-6a8506099945?w=600&q=80" alt="Hotel room" onerror="this.src='https://placehold.co/450x600/14724f/fbf8f1?text=Hotel'">
+        </div>
+        <div class="hero-img hero-img-2">
+          <img src="https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=600&q=80" alt="Hanoi hotel" onerror="this.src='https://placehold.co/400x300/c4965a/fbf8f1?text=View'">
+        </div>
+        <div class="hero-badge">
+          <div class="ai-dot">S</div>
+          <div>
+            <strong>Đang tư vấn</strong><br>
+            <span style="color:var(--ink-500)">"View Hồ Tây, 2 người..."</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- HOTEL SUGGESTIONS -->
+  <section id="hotels">
+    <div class="section-head">
+      <div>
+        <h2>Khách sạn <em>nổi bật</em> tại Hà Nội</h2>
+      </div>
+      <p>Đã được hơn 12,000 du khách lựa chọn trong tháng này — kèm tour ảo VR.</p>
+    </div>
+    <div class="hotel-grid" id="hotel-grid"></div>
+  </section>
+
+  <!-- COMBO TOURS -->
+  <section id="combos">
+    <div class="section-head">
+      <div>
+        <h2>Combo <em>du lịch</em> trọn gói</h2>
+      </div>
+      <p>Khách sạn + ăn uống + tham quan, gói gọn trong một ngân sách.</p>
+    </div>
+    <div class="combo-grid">
+      <div class="combo-card large">
+        <img src="https://images.unsplash.com/photo-1555921015-5532091f6026?w=900&q=80" alt="" onerror="this.src='https://placehold.co/600x500/0a3d2e/fbf8f1?text=Hoan+Kiem'">
+        <div class="label">
+          <small>3N2Đ · Từ 2.890.000đ</small>
+          <h3>Hoàn Kiếm — Phố cổ về đêm</h3>
+        </div>
+      </div>
+      <div class="combo-card">
+        <img src="https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=600&q=80" alt="" onerror="this.src='https://placehold.co/400x300/14724f/fbf8f1?text=Tay+Ho'">
+        <div class="label">
+          <small>2N1Đ · 1.490.000đ</small>
+          <h3>Tây Hồ Retreat</h3>
+        </div>
+      </div>
+      <div class="combo-card">
+        <img src="https://images.unsplash.com/photo-1601233718686-3c0e7b3f1c11?w=600&q=80" alt="" onerror="this.src='https://placehold.co/400x300/b85c3c/fbf8f1?text=Ba+Dinh'">
+        <div class="label">
+          <small>2N1Đ · 1.690.000đ</small>
+          <h3>Ba Đình — Lăng Bác</h3>
+        </div>
+      </div>
+      <div class="combo-card">
+        <img src="https://images.unsplash.com/photo-1542640244-7e672d6cef4e?w=600&q=80" alt="" onerror="this.src='https://placehold.co/400x300/c4965a/fbf8f1?text=Long+Bien'">
+        <div class="label">
+          <small>3N2Đ · 2.190.000đ</small>
+          <h3>Long Biên — Bãi giữa</h3>
+        </div>
+      </div>
+      <div class="combo-card">
+        <img src="https://images.unsplash.com/photo-1590490360182-c33d57733427?w=600&q=80" alt="" onerror="this.src='https://placehold.co/400x300/14724f/fbf8f1?text=Ha+Dong'">
+        <div class="label">
+          <small>2N1Đ · 990.000đ</small>
+          <h3>Hà Đông Eco</h3>
+        </div>
+      </div>
+    </div>
+  </section>
+
+</div>
+
+<!-- ============ RESULTS PAGE ============ -->
+<section class="results-page" id="results-page">
+  <div style="margin-bottom: 20px;">
+    <button class="btn btn-ghost" onclick="goHome()" style="padding-left:0">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m15 18-6-6 6-6"/></svg>
+      Quay lại
+    </button>
+  </div>
+  <div class="section-head">
+    <div>
+      <h2 id="results-title"><em>32</em> khách sạn phù hợp</h2>
+    </div>
+    <p>Đã lọc theo mong muốn của bạn từ trợ lý AI.</p>
+  </div>
+
+  <div class="filter-bar">
+    <div class="filter-group">
+      <label>Sắp xếp</label>
+      <select id="sort-by" onchange="renderHotels()">
+        <option value="recommended">Đề xuất</option>
+        <option value="price-asc">Giá thấp → cao</option>
+        <option value="price-desc">Giá cao → thấp</option>
+        <option value="rating">Đánh giá tốt nhất</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Khoảng giá</label>
+      <select id="price-range" onchange="renderHotels()">
+        <option value="all">Tất cả</option>
+        <option value="0-1000000">Dưới 1tr</option>
+        <option value="1000000-2000000">1tr – 2tr</option>
+        <option value="2000000-5000000">2tr – 5tr</option>
+        <option value="5000000-99999999">Trên 5tr</option>
+      </select>
+    </div>
+    <div class="filter-group">
+      <label>Vị trí</label>
+      <select id="location" onchange="renderHotels()">
+        <option value="all">Toàn Hà Nội</option>
+        <option value="Hoàn Kiếm">Hoàn Kiếm</option>
+        <option value="Tây Hồ">Tây Hồ</option>
+        <option value="Ba Đình">Ba Đình</option>
+        <option value="Cầu Giấy">Cầu Giấy</option>
+        <option value="Long Biên">Long Biên</option>
+      </select>
+    </div>
+    <div class="filter-chips" style="margin-left: auto;">
+      <button class="chip" onclick="toggleChip(this, 'pool')">🏊 Bể bơi</button>
+      <button class="chip" onclick="toggleChip(this, 'gym')">💪 Gym</button>
+      <button class="chip" onclick="toggleChip(this, 'spa')">🧖 Spa</button>
+      <button class="chip" onclick="toggleChip(this, 'view')">🌆 View đẹp</button>
+    </div>
+  </div>
+
+  <div class="hotel-grid" id="results-grid"></div>
+</section>
+
+<!-- ============ HOTEL DETAIL MODAL ============ -->
+<div class="modal-overlay" id="hotel-modal">
+  <div class="modal" id="hotel-modal-content"></div>
+</div>
+
+<!-- ============ CHECKOUT MODAL ============ -->
+<div class="modal-overlay" id="checkout-modal">
+  <div class="modal" id="checkout-content" style="max-width: 920px;"></div>
+</div>
+
+<!-- ============ CONFIRMATION PAGE ============ -->
+<section class="confirm-page" id="confirm-page"></section>
+
+<!-- ============ CHAT FAB ============ -->
+<div class="chat-fab" id="chat-fab" onclick="openChat()">
+  <div class="chat-bubble">
+    <div class="chat-avatar">S</div>
+    <div class="chat-text">
+      <strong>Smarty</strong>
+      <small>Tôi giúp bạn tìm phòng nhé?</small>
+    </div>
+  </div>
+</div>
+
+<!-- ============ CHAT PANEL ============ -->
+<div class="chat-panel" id="chat-panel">
+  <div class="chat-header">
+    <div class="chat-avatar">S</div>
+    <div>
+      <h4>Smarty</h4>
+      <small>Trực tuyến · Trợ lý đặt phòng AI</small>
+    </div>
+    <div class="chat-actions">
+      <button class="chat-icon-btn" onclick="toggleFullscreen()" title="Toàn màn hình">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 8V5a2 2 0 0 1 2-2h3M21 8V5a2 2 0 0 0-2-2h-3M3 16v3a2 2 0 0 0 2 2h3M21 16v3a2 2 0 0 1-2 2h-3"/></svg>
+      </button>
+      <button class="chat-icon-btn" onclick="closeChat()" title="Đóng">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+      </button>
+    </div>
+  </div>
+  <div class="chat-body" id="chat-body"></div>
+  <div class="quick-replies" id="quick-replies"></div>
+  <div class="chat-input-area">
+    <div class="chat-input-row">
+      <input type="text" id="chat-input" placeholder="Mô tả mong muốn của bạn..." onkeydown="if(event.key==='Enter')sendMsg()">
+      <button class="chat-send" onclick="sendMsg()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="m22 2-7 20-4-9-9-4Z"/><path d="M22 2 11 13"/></svg>
+      </button>
+    </div>
+  </div>
+</div>
+
+<script>
+/* ============================================
+   DATA
+============================================ */
+const HOTELS = [
+  {
+    id: 1, name: "Sofitel Legend Metropole",
+    location: "Hoàn Kiếm", address: "15 Ngô Quyền, Hoàn Kiếm, Hà Nội",
+    price: 5800000, rating: 4.9, reviews: 2847,
+    img: "https://images.unsplash.com/photo-1564501049412-61c2a3083791?w=800&q=80",
+    amenities: ["pool","gym","spa","view","breakfast","wifi"],
+    desc: "Khách sạn 5 sao mang dấu ấn Pháp cổ điển ngay trung tâm Hà Nội.",
+    rooms: [
+      { type: "Phòng Premium Deluxe", size: "32m², 1 giường King", price: 5800000 },
+      { type: "Phòng Grand Premium", size: "42m², 1 giường King + view hồ", price: 7200000 },
+      { type: "Suite Metropole", size: "65m², 2 phòng ngủ", price: 12500000 }
+    ]
+  },
+  {
+    id: 2, name: "Apricot Hotel",
+    location: "Hoàn Kiếm", address: "136 Hàng Trống, Hoàn Kiếm",
+    price: 2400000, rating: 4.7, reviews: 1523,
+    img: "https://images.unsplash.com/photo-1542314831-068cd1dbfeeb?w=800&q=80",
+    amenities: ["gym","spa","view","breakfast"],
+    desc: "Khách sạn nghệ thuật view Hồ Hoàn Kiếm, gần phố đi bộ.",
+    rooms: [
+      { type: "Deluxe City View", size: "28m², 1 giường Queen", price: 2400000 },
+      { type: "Premier Lake View", size: "32m², view Hồ Gươm", price: 3200000 }
+    ]
+  },
+  {
+    id: 3, name: "InterContinental Westlake",
+    location: "Tây Hồ", address: "5 Từ Hoa, Quảng An, Tây Hồ",
+    price: 4200000, rating: 4.8, reviews: 2156,
+    img: "https://images.unsplash.com/photo-1582719508461-905c673771fd?w=800&q=80",
+    amenities: ["pool","gym","spa","view","breakfast"],
+    desc: "Resort 5 sao trên Hồ Tây với pavilion độc đáo trên mặt nước.",
+    rooms: [
+      { type: "Lake View King", size: "40m², view Hồ Tây", price: 4200000 },
+      { type: "Pavilion Suite", size: "55m², trên mặt hồ", price: 8900000 }
+    ]
+  },
+  {
+    id: 4, name: "Hanoi La Siesta Premium",
+    location: "Hoàn Kiếm", address: "94 Mã Mây, Hoàn Kiếm",
+    price: 1450000, rating: 4.8, reviews: 3204,
+    img: "https://images.unsplash.com/photo-1551882547-ff40c63fe5fa?w=800&q=80",
+    amenities: ["gym","spa","breakfast","wifi"],
+    desc: "Boutique giữa phố cổ, nổi tiếng dịch vụ chu đáo.",
+    rooms: [
+      { type: "Premium Junior Suite", size: "28m²", price: 1450000 },
+      { type: "Premium Deluxe", size: "35m²", price: 1850000 }
+    ]
+  },
+  {
+    id: 5, name: "Pan Pacific Hanoi",
+    location: "Tây Hồ", address: "1 Thanh Niên, Ba Đình",
+    price: 3100000, rating: 4.7, reviews: 1876,
+    img: "https://images.unsplash.com/photo-1571003123894-1f0594d2b5d9?w=800&q=80",
+    amenities: ["pool","gym","spa","view","breakfast"],
+    desc: "Khách sạn 5 sao view trọn Hồ Tây và Hồ Trúc Bạch.",
+    rooms: [
+      { type: "Deluxe Lake View", size: "36m²", price: 3100000 },
+      { type: "Pacific Club Suite", size: "60m²", price: 5400000 }
+    ]
+  },
+  {
+    id: 6, name: "Hanoi Pearl Hotel",
+    location: "Hoàn Kiếm", address: "6 Bảo Khánh, Hoàn Kiếm",
+    price: 850000, rating: 4.5, reviews: 1124,
+    img: "https://images.unsplash.com/photo-1611892440504-42a792e24d32?w=800&q=80",
+    amenities: ["gym","wifi","breakfast"],
+    desc: "Khách sạn 4 sao gần Hồ Gươm, giá hợp lý cho đôi.",
+    rooms: [
+      { type: "Standard Double", size: "22m²", price: 850000 },
+      { type: "Deluxe Twin", size: "26m²", price: 1100000 }
+    ]
+  },
+  {
+    id: 7, name: "Lotte Hotel Hanoi",
+    location: "Ba Đình", address: "54 Liễu Giai, Ba Đình",
+    price: 4500000, rating: 4.8, reviews: 2641,
+    img: "https://images.unsplash.com/photo-1455587734955-081b22074882?w=800&q=80",
+    amenities: ["pool","gym","spa","view","breakfast"],
+    desc: "Khách sạn cao tầng với hồ bơi vô cực và view 360° toàn thành phố.",
+    rooms: [
+      { type: "Deluxe City View", size: "42m²", price: 4500000 },
+      { type: "Premier Suite", size: "75m²", price: 8200000 }
+    ]
+  },
+  {
+    id: 8, name: "Hanoi Daewoo Hotel",
+    location: "Ba Đình", address: "360 Kim Mã, Ba Đình",
+    price: 2200000, rating: 4.6, reviews: 1987,
+    img: "https://images.unsplash.com/photo-1520250497591-112f2f40a3f4?w=800&q=80",
+    amenities: ["pool","gym","spa","breakfast"],
+    desc: "Khách sạn 5 sao kinh điển với hồ bơi ngoài trời lớn nhất Hà Nội.",
+    rooms: [
+      { type: "Deluxe Garden View", size: "36m²", price: 2200000 },
+      { type: "Executive Suite", size: "65m²", price: 4800000 }
+    ]
+  }
+];
+
+const RESTAURANTS = [
+  { name: "Bún Chả Hương Liên", tag: "Bún chả Obama", img: "https://images.unsplash.com/photo-1582878826629-29b7ad1cdc43?w=400&q=80" },
+  { name: "Phở Thìn Lò Đúc", tag: "Phở bò truyền thống", img: "https://images.unsplash.com/photo-1582106245687-cbb466a9f07f?w=400&q=80" },
+  { name: "Cà phê Giảng", tag: "Cà phê trứng", img: "https://images.unsplash.com/photo-1497636577773-f1231844b336?w=400&q=80" },
+  { name: "Chả Cá Lã Vọng", tag: "Đặc sản Hà Nội", img: "https://images.unsplash.com/photo-1565299624946-b28f40a0ae38?w=400&q=80" }
+];
+
+const ATTRACTIONS = [
+  { name: "Hồ Hoàn Kiếm", tag: "Tham quan", img: "https://images.unsplash.com/photo-1583417319070-4a69db38a482?w=400&q=80" },
+  { name: "Phố cổ Hà Nội", tag: "Đi bộ về đêm", img: "https://images.unsplash.com/photo-1555921015-5532091f6026?w=400&q=80" }
+];
+
+/* ============================================
+   STATE
+============================================ */
+let currentFilter = { amenities: [] };
+let currentBooking = null;
+
+/* ============================================
+   PAGE NAVIGATION
+============================================ */
+function goHome(e) {
+  if (e) e.preventDefault();
+  document.getElementById('home-page').style.display = 'block';
+  document.getElementById('results-page').classList.remove('active');
+  document.getElementById('confirm-page').classList.remove('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+function showResults(filters) {
+  document.getElementById('home-page').style.display = 'none';
+  document.getElementById('confirm-page').classList.remove('active');
+  document.getElementById('results-page').classList.add('active');
+  if (filters) currentFilter = { ...currentFilter, ...filters };
+  renderHotels();
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+}
+
+/* ============================================
+   HOTEL CARDS
+============================================ */
+function fmtPrice(n) {
+  return n.toLocaleString('vi-VN') + 'đ';
+}
+
+function renderHotelCard(h) {
+  return `
+    <div class="hotel-card" onclick="openHotel(${h.id})">
+      <div class="img-wrap">
+        <img src="${h.img}" alt="${h.name}" onerror="this.src='https://placehold.co/400x300/14724f/fbf8f1?text=${encodeURIComponent(h.name)}'">
+        <div class="vr-badge">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+          VR Tour
+        </div>
+        <div class="price-badge">${fmtPrice(h.price)}/đêm</div>
+      </div>
+      <div class="info">
+        <h3>${h.name}</h3>
+        <div class="loc">
+          <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+          ${h.location} · ${h.address.split(',')[0]}
+        </div>
+        <div class="meta">
+          <span class="rating">⭐ ${h.rating} <small style="color:var(--ink-500); font-weight: 400;">(${h.reviews})</small></span>
+          <span class="price">${fmtPrice(h.price)}<small>/đêm</small></span>
+        </div>
+      </div>
+    </div>
+  `;
+}
+
+// Home page popular hotels
+document.getElementById('hotel-grid').innerHTML = HOTELS.slice(0, 4).map(renderHotelCard).join('');
+
+function renderHotels() {
+  let list = [...HOTELS];
+
+  // Price filter
+  const pr = document.getElementById('price-range')?.value;
+  if (pr && pr !== 'all') {
+    const [min, max] = pr.split('-').map(Number);
+    list = list.filter(h => h.price >= min && h.price <= max);
+  }
+
+  // Location
+  const loc = document.getElementById('location')?.value;
+  if (loc && loc !== 'all') list = list.filter(h => h.location === loc);
+
+  // Amenities chips
+  if (currentFilter.amenities.length) {
+    list = list.filter(h => currentFilter.amenities.every(a => h.amenities.includes(a)));
+  }
+
+  // Sort
+  const sort = document.getElementById('sort-by')?.value;
+  if (sort === 'price-asc') list.sort((a,b) => a.price - b.price);
+  else if (sort === 'price-desc') list.sort((a,b) => b.price - a.price);
+  else if (sort === 'rating') list.sort((a,b) => b.rating - a.rating);
+
+  document.getElementById('results-title').innerHTML = `<em>${list.length}</em> khách sạn phù hợp`;
+  document.getElementById('results-grid').innerHTML = list.length
+    ? list.map(renderHotelCard).join('')
+    : '<p style="grid-column: 1/-1; text-align:center; color: var(--ink-500); padding: 40px;">Không tìm thấy khách sạn phù hợp với bộ lọc.</p>';
+}
+
+function toggleChip(el, key) {
+  el.classList.toggle('active');
+  if (currentFilter.amenities.includes(key)) {
+    currentFilter.amenities = currentFilter.amenities.filter(x => x !== key);
+  } else {
+    currentFilter.amenities.push(key);
+  }
+  renderHotels();
+}
+
+/* ============================================
+   HOTEL DETAIL
+============================================ */
+function openHotel(id) {
+  const h = HOTELS.find(x => x.id === id);
+  if (!h) return;
+  const amenityIcons = {
+    pool: ['🏊','Bể bơi'], gym: ['💪','Phòng gym'], spa: ['🧖','Spa'],
+    view: ['🌆','View đẹp'], breakfast: ['🍳','Bữa sáng'], wifi: ['📶','Wifi miễn phí']
+  };
+  document.getElementById('hotel-modal-content').innerHTML = `
+    <button class="modal-close" onclick="closeModal('hotel-modal')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-hero">
+      <img src="${h.img}" alt="${h.name}" onerror="this.src='https://placehold.co/900x320/14724f/fbf8f1?text=${encodeURIComponent(h.name)}'">
+      <button class="vr-toggle">
+        <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M2 12h20M12 2a15 15 0 0 1 0 20M12 2a15 15 0 0 0 0 20"/></svg>
+        Xem VR Tour 360°
+      </button>
+    </div>
+    <div class="modal-body">
+      <div class="modal-title-row">
+        <div>
+          <h2>${h.name}</h2>
+          <div class="loc-row">
+            <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 10c0 7-8 13-8 13s-8-6-8-13a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
+            ${h.address}
+          </div>
+        </div>
+        <div style="text-align:right; flex-shrink:0;">
+          <div style="font-size:13px; color: var(--ink-500);">⭐ ${h.rating} · ${h.reviews} đánh giá</div>
+        </div>
+      </div>
+      <p style="color: var(--ink-700); font-size: 14px; margin-bottom: 12px;">${h.desc}</p>
+      <div class="modal-amenities">
+        ${h.amenities.map(a => `<div class="amenity">${amenityIcons[a][0]} ${amenityIcons[a][1]}</div>`).join('')}
+      </div>
+      <h3 style="font-family: var(--serif); font-size: 20px; font-weight: 500; margin-bottom: 12px;">Chọn loại phòng</h3>
+      <div class="room-list">
+        ${h.rooms.map((r, i) => `
+          <div class="room-card">
+            <div>
+              <h4>${r.type}</h4>
+              <div class="room-meta">${r.size} · Bao gồm thuế và phí</div>
+            </div>
+            <div class="room-price">
+              <span class="num">${fmtPrice(r.price)}</span>
+              <small>mỗi đêm</small>
+              <button class="book-btn" onclick="startCheckout(${h.id}, ${i})">Đặt phòng ngay</button>
+            </div>
+          </div>
+        `).join('')}
+      </div>
+    </div>
+  `;
+  document.getElementById('hotel-modal').classList.add('active');
+}
+
+function closeModal(id) {
+  document.getElementById(id).classList.remove('active');
+}
+
+/* ============================================
+   CHECKOUT
+============================================ */
+function startCheckout(hotelId, roomIdx) {
+  const h = HOTELS.find(x => x.id === hotelId);
+  const r = h.rooms[roomIdx];
+  closeModal('hotel-modal');
+
+  const nights = 2;
+  const subtotal = r.price * nights;
+  const tax = Math.round(subtotal * 0.1);
+  const total = subtotal + tax;
+  currentBooking = { hotel: h, room: r, nights, total, checkin: '04/05/2026', checkout: '06/05/2026' };
+
+  document.getElementById('checkout-content').innerHTML = `
+    <button class="modal-close" onclick="closeModal('checkout-modal')">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M18 6 6 18M6 6l12 12"/></svg>
+    </button>
+    <div class="modal-body">
+      <h2 style="font-family: var(--serif); font-size: 28px; font-weight: 500; margin-bottom: 6px;">Hoàn tất <em style="color: var(--emerald-700);">đặt phòng</em></h2>
+      <p style="color: var(--ink-500); font-size: 14px; margin-bottom: 24px;">Đây là demo — không có giao dịch thực tế.</p>
+
+      <div class="checkout-grid">
+        <div class="checkout-form">
+          <h3>Thông tin khách</h3>
+          <div class="form-row">
+            <div class="form-field"><label>Họ</label><input type="text" id="ck-firstname" placeholder="Nguyễn" value="Nguyễn"></div>
+            <div class="form-field"><label>Tên</label><input type="text" id="ck-lastname" placeholder="Văn A" value="Minh Anh"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Email</label><input type="email" id="ck-email" placeholder="email@example.com" value="minhanh@email.com"></div>
+            <div class="form-field"><label>Số điện thoại</label><input type="tel" id="ck-phone" placeholder="0912 345 678" value="0912 345 678"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Nhận phòng</label><input type="text" value="04/05/2026"></div>
+            <div class="form-field"><label>Trả phòng</label><input type="text" value="06/05/2026"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field full"><label>Ghi chú đặc biệt (tuỳ chọn)</label><input type="text" placeholder="Ví dụ: phòng tầng cao, cách xa thang máy..."></div>
+          </div>
+
+          <h3 style="margin-top: 24px;">Phương thức thanh toán</h3>
+          <div class="pay-methods">
+            <div class="pay-method active" onclick="this.parentElement.querySelectorAll('.pay-method').forEach(x=>x.classList.remove('active')); this.classList.add('active');">
+              <div class="pay-method-icon">💳</div>Thẻ tín dụng
+            </div>
+            <div class="pay-method" onclick="this.parentElement.querySelectorAll('.pay-method').forEach(x=>x.classList.remove('active')); this.classList.add('active');">
+              <div class="pay-method-icon">📱</div>VNPay / MoMo
+            </div>
+            <div class="pay-method" onclick="this.parentElement.querySelectorAll('.pay-method').forEach(x=>x.classList.remove('active')); this.classList.add('active');">
+              <div class="pay-method-icon">🏨</div>Tại khách sạn
+            </div>
+          </div>
+          <div class="form-row">
+            <div class="form-field full"><label>Số thẻ</label><input type="text" placeholder="•••• •••• •••• 4242" value="4242 4242 4242 4242"></div>
+          </div>
+          <div class="form-row">
+            <div class="form-field"><label>Hết hạn</label><input type="text" placeholder="MM/YY" value="12/28"></div>
+            <div class="form-field"><label>CVV</label><input type="text" placeholder="•••" value="•••"></div>
+          </div>
+        </div>
+
+        <div class="checkout-summary">
+          <h3>Đơn đặt</h3>
+          <div class="summary-hotel">
+            <img src="${h.img}" alt="" onerror="this.src='https://placehold.co/70x70/14724f/fbf8f1?text=H'">
+            <div>
+              <h4>${h.name}</h4>
+              <small>${h.location}</small><br>
+              <small style="color: var(--ink-700);">${r.type}</small>
+            </div>
+          </div>
+          <div class="summary-row"><span>Nhận phòng</span><strong>04/05/2026</strong></div>
+          <div class="summary-row"><span>Trả phòng</span><strong>06/05/2026</strong></div>
+          <div class="summary-row"><span>${nights} đêm × ${fmtPrice(r.price)}</span><strong>${fmtPrice(subtotal)}</strong></div>
+          <div class="summary-row"><span>Thuế & phí (10%)</span><strong>${fmtPrice(tax)}</strong></div>
+          <div class="summary-row total"><span>Tổng</span><span>${fmtPrice(total)}</span></div>
+          <button class="btn btn-emerald" style="width: 100%; margin-top: 18px; padding: 14px; justify-content: center;" onclick="confirmBooking()">
+            Xác nhận đặt phòng
+          </button>
+          <p style="font-size: 11px; color: var(--ink-500); text-align: center; margin-top: 10px;">Bằng việc xác nhận, bạn đồng ý điều khoản của STAY-SMART.</p>
+        </div>
+      </div>
+    </div>
+  `;
+  document.getElementById('checkout-modal').classList.add('active');
+}
+
+/* ============================================
+   CONFIRMATION
+============================================ */
+function confirmBooking() {
+  closeModal('checkout-modal');
+  document.getElementById('home-page').style.display = 'none';
+  document.getElementById('results-page').classList.remove('active');
+
+  const b = currentBooking;
+  const code = 'STS' + Math.random().toString(36).substring(2,8).toUpperCase();
+  const guestName = (document.getElementById('ck-firstname')?.value || 'Nguyễn') + ' ' + (document.getElementById('ck-lastname')?.value || 'Minh Anh');
+  const email = document.getElementById('ck-email')?.value || 'minhanh@email.com';
+
+  document.getElementById('confirm-page').innerHTML = `
+    <div class="check-circle">
+      <svg width="44" height="44" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><polyline points="20 6 9 17 4 12"/></svg>
+    </div>
+    <h1>Đặt phòng <em>thành công!</em></h1>
+    <p>Email xác nhận đã được gửi đến <strong>${email}</strong></p>
+
+    <div class="confirm-card">
+      <div class="confirm-id">
+        <div>
+          <small>Mã đặt phòng</small>
+          <strong>${code}</strong>
+        </div>
+        <div class="code">CONFIRMED</div>
+      </div>
+      <div class="confirm-row">
+        <div class="confirm-cell"><label>Người đặt</label><strong>${guestName}</strong></div>
+        <div class="confirm-cell"><label>Khách sạn</label><strong>${b.hotel.name}</strong></div>
+      </div>
+      <div class="confirm-row">
+        <div class="confirm-cell"><label>Loại phòng</label><strong>${b.room.type}</strong></div>
+        <div class="confirm-cell"><label>Số đêm</label><strong>${b.nights} đêm</strong></div>
+      </div>
+      <div class="confirm-row">
+        <div class="confirm-cell"><label>Nhận phòng</label><strong>${b.checkin} · 14:00</strong></div>
+        <div class="confirm-cell"><label>Trả phòng</label><strong>${b.checkout} · 12:00</strong></div>
+      </div>
+      <div class="confirm-row" style="border-top: 1px dashed rgba(11,20,16,.15); padding-top: 16px; margin-top: 8px;">
+        <div class="confirm-cell"><label>Tổng chi phí</label><strong style="font-size: 22px; font-family: var(--serif); color: var(--emerald-700);">${fmtPrice(b.total)}</strong></div>
+        <div class="confirm-cell"><label>Đã bao gồm thuế và phí</label><strong style="color: var(--ink-500); font-weight: 400; font-size: 13px;">VAT 10%</strong></div>
+      </div>
+    </div>
+
+    <div class="confirm-actions">
+      <button class="btn btn-primary" onclick="goHome()">Quay lại trang chủ</button>
+      <button class="btn btn-ghost" onclick="window.print()">In phiếu xác nhận</button>
+    </div>
+  `;
+  document.getElementById('confirm-page').classList.add('active');
+  window.scrollTo({ top: 0, behavior: 'smooth' });
+
+  // Trigger chatbot suggestion after 1.5s
+  setTimeout(() => {
+    openChat();
+    setTimeout(() => {
+      addBotMsg(
+        `🎉 Chúc mừng anh/chị <strong>${guestName}</strong> đã đặt phòng thành công tại <strong>${b.hotel.name}</strong>!<br><br>Bạn có muốn tôi gợi ý các <strong>địa điểm ăn uống, vui chơi</strong> quanh khu vực khách sạn không?`,
+        `<div class="inline-actions">
+          <button class="inline-yes" onclick="suggestPlaces()">Có, gợi ý cho tôi</button>
+          <button class="inline-no" onclick="declinePlaces()">Không, cảm ơn</button>
+        </div>`
+      );
+    }, 600);
+  }, 1500);
+}
+
+/* ============================================
+   CHATBOT
+============================================ */
+const chatBody = document.getElementById('chat-body');
+const quickReplies = document.getElementById('quick-replies');
+
+function openChat() {
+  document.getElementById('chat-panel').classList.add('active');
+  document.getElementById('chat-fab').classList.add('hide');
+  if (!chatBody.dataset.init) {
+    initChat();
+    chatBody.dataset.init = '1';
+  }
+}
+function closeChat() {
+  document.getElementById('chat-panel').classList.remove('active', 'fullscreen');
+  document.getElementById('chat-fab').classList.remove('hide');
+}
+function toggleFullscreen() {
+  document.getElementById('chat-panel').classList.toggle('fullscreen');
+}
+
+function nowTime() {
+  const d = new Date();
+  return d.getHours().toString().padStart(2,'0') + ':' + d.getMinutes().toString().padStart(2,'0');
+}
+
+function addBotMsg(html, extraHtml = '') {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.innerHTML = `<div class="msg-bubble">${html}${extraHtml}</div><span class="time">Smarty · ${nowTime()}</span>`;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function addUserMsg(text) {
+  const div = document.createElement('div');
+  div.className = 'msg user';
+  div.innerHTML = `<div class="msg-bubble">${text}</div><span class="time">${nowTime()}</span>`;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function showTyping() {
+  const div = document.createElement('div');
+  div.className = 'msg bot';
+  div.id = 'typing-indicator';
+  div.innerHTML = `<div class="typing"><span></span><span></span><span></span></div>`;
+  chatBody.appendChild(div);
+  chatBody.scrollTop = chatBody.scrollHeight;
+}
+function removeTyping() {
+  document.getElementById('typing-indicator')?.remove();
+}
+
+function setQuickReplies(arr) {
+  quickReplies.innerHTML = arr.map(t => `<button class="quick-reply" onclick="quickReply('${t.replace(/'/g,"\\'")}')">${t}</button>`).join('');
+}
+
+function initChat() {
+  setTimeout(() => {
+    addBotMsg(`Xin chào! 👋 Tôi là <strong>Smarty</strong>, trợ lý AI của STAY-SMART.<br><br>Tôi sẽ giúp bạn tìm khách sạn ở Hà Nội phù hợp với mong muốn — chỉ cần mô tả là tôi tìm ngay!`);
+    setQuickReplies([
+      "Khách sạn trung tâm dưới 1tr",
+      "Khách sạn view Hồ Tây",
+      "Có bể bơi & gym",
+      "Cao cấp 5 sao gần phố cổ"
+    ]);
+  }, 300);
+}
+
+function quickReply(text) {
+  document.getElementById('chat-input').value = text;
+  sendMsg();
+}
+
+function sendMsg() {
+  const input = document.getElementById('chat-input');
+  const text = input.value.trim();
+  if (!text) return;
+  addUserMsg(text);
+  input.value = '';
+  quickReplies.innerHTML = '';
+  processUserMessage(text);
+}
+
+/* ============================================
+   AI INTENT PROCESSING (rule-based for demo)
+============================================ */
+function processUserMessage(text) {
+  showTyping();
+  const lower = text.toLowerCase();
+
+  setTimeout(() => {
+    removeTyping();
+
+    // Extract preferences
+    const pref = parsePref(lower);
+    const matches = filterHotelsByPref(pref);
+
+    if (matches.length === 0) {
+      addBotMsg(`Hmm, tôi chưa tìm được khách sạn nào khớp 100% với yêu cầu này. Bạn có muốn nới rộng khoảng giá hoặc khu vực không?`);
+      setQuickReplies(["Tăng ngân sách 20%", "Khu vực khác", "Bỏ qua tiện ích"]);
+      return;
+    }
+
+    // Friendly summary of what AI understood
+    let summary = "Tôi hiểu bạn muốn:";
+    const bullets = [];
+    if (pref.location) bullets.push(`📍 Vị trí: <strong>${pref.location}</strong>`);
+    if (pref.priceMax) bullets.push(`💰 Giá tối đa: <strong>${fmtPrice(pref.priceMax)}/đêm</strong>`);
+    if (pref.guests) bullets.push(`👥 Số khách: <strong>${pref.guests} người</strong>`);
+    if (pref.amenities.length) {
+      const labels = { pool: 'bể bơi', gym: 'gym', spa: 'spa', view: 'view đẹp', breakfast: 'bữa sáng' };
+      bullets.push(`✨ Tiện ích: <strong>${pref.amenities.map(a => labels[a]||a).join(', ')}</strong>`);
+    }
+    if (pref.vibe) bullets.push(`🌿 Cảm giác: <strong>${pref.vibe}</strong>`);
+    summary += '<br>' + bullets.map(b => '• ' + b).join('<br>');
+    summary += `<br><br>Đây là <strong>${matches.length}</strong> khách sạn phù hợp nhất:`;
+
+    const hotelCards = `<div class="chat-hotels">${matches.slice(0, 3).map(h => `
+      <div class="chat-hotel-card" onclick="openHotel(${h.id})">
+        <img src="${h.img}" onerror="this.src='https://placehold.co/90x90/14724f/fbf8f1?text=H'">
+        <div class="ch-info">
+          <div>
+            <h5>${h.name}</h5>
+            <div class="ch-loc">${h.location} · ${h.address.split(',')[0]}</div>
+          </div>
+          <div class="ch-meta">
+            <span class="ch-rating">⭐ ${h.rating}</span>
+            <span class="ch-price">${fmtPrice(h.price)}</span>
+          </div>
+        </div>
+      </div>
+    `).join('')}</div>`;
+
+    addBotMsg(summary, hotelCards);
+
+    setTimeout(() => {
+      addBotMsg(`Bạn muốn xem chi tiết khách sạn nào? Hoặc tôi có thể lọc thêm:`);
+      setQuickReplies(["Xem tất cả kết quả", "Có khách sạn nào rẻ hơn không?", "Có view đẹp hơn không?", "Gần phố ăn uống"]);
+    }, 800);
+
+  }, 1200);
+}
+
+function parsePref(text) {
+  const pref = { amenities: [] };
+
+  // Location
+  if (/hoàn kiếm|phố cổ|hồ gươm|trung tâm/.test(text)) pref.location = "Hoàn Kiếm";
+  else if (/tây hồ|hồ tây/.test(text)) pref.location = "Tây Hồ";
+  else if (/ba đình|kim mã|liễu giai/.test(text)) pref.location = "Ba Đình";
+  else if (/cầu giấy/.test(text)) pref.location = "Cầu Giấy";
+
+  // Price
+  const priceMatch = text.match(/(\d+(?:[\.,]\d+)?)\s*(triệu|tr|tr\b|k|nghìn|đồng|đ)/);
+  if (priceMatch) {
+    let n = parseFloat(priceMatch[1].replace(',','.'));
+    const unit = priceMatch[2];
+    if (unit.startsWith('tr') || unit === 'triệu') n = n * 1000000;
+    else if (unit === 'k' || unit === 'nghìn') n = n * 1000;
+    pref.priceMax = n;
+  }
+  if (/dưới 1tr|dưới 1 triệu/.test(text)) pref.priceMax = 1000000;
+  if (/giá rẻ|tiết kiệm|sinh viên/.test(text) && !pref.priceMax) pref.priceMax = 1500000;
+  if (/cao cấp|sang trọng|5 sao|luxury/.test(text)) pref.priceMin = 3000000;
+
+  // Guests
+  const guestsMatch = text.match(/(\d+)\s*người/);
+  if (guestsMatch) pref.guests = parseInt(guestsMatch[1]);
+
+  // Amenities
+  if (/bể bơi|hồ bơi|pool|bơi/.test(text)) pref.amenities.push('pool');
+  if (/gym|tập gym|phòng tập/.test(text)) pref.amenities.push('gym');
+  if (/spa|massage/.test(text)) pref.amenities.push('spa');
+  if (/view|cảnh đẹp|nhìn ra|cao tầng/.test(text)) pref.amenities.push('view');
+  if (/bữa sáng|ăn sáng|breakfast/.test(text)) pref.amenities.push('breakfast');
+
+  // Vibe (qualitative)
+  if (/yên tĩnh|thoáng|dễ chịu|lãng mạn|riêng tư/.test(text)) pref.vibe = "yên tĩnh, thoáng đãng";
+  if (/sôi động|nhộn nhịp|gần phố/.test(text)) pref.vibe = "sôi động, gần khu vui chơi";
+
+  return pref;
+}
+
+function filterHotelsByPref(pref) {
+  let list = [...HOTELS];
+  if (pref.location) list = list.filter(h => h.location === pref.location);
+  if (pref.priceMax) list = list.filter(h => h.price <= pref.priceMax * 1.1); // 10% leeway
+  if (pref.priceMin) list = list.filter(h => h.price >= pref.priceMin);
+  if (pref.amenities.length) {
+    list = list.filter(h => pref.amenities.every(a => h.amenities.includes(a)));
+  }
+  // Score & sort
+  list.sort((a,b) => b.rating - a.rating);
+  return list;
+}
+
+/* ============================================
+   PLACE SUGGESTIONS (after booking)
+============================================ */
+function suggestPlaces() {
+  addUserMsg("Có, gợi ý cho tôi");
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addBotMsg(
+      `Tuyệt vời! Đây là một vài địa điểm ngon nổi tiếng quanh khách sạn của bạn:`,
+      `<div class="place-grid">${RESTAURANTS.map(p => `
+        <div class="place-card">
+          <img src="${p.img}" onerror="this.src='https://placehold.co/200x150/c4965a/fbf8f1?text=Food'">
+          <div class="pc-info">
+            <h6>${p.name}</h6>
+            <div class="pc-tag">${p.tag}</div>
+          </div>
+        </div>
+      `).join('')}</div>`
+    );
+    setTimeout(() => {
+      addBotMsg(
+        `Và một số địa điểm <strong>vui chơi</strong>:`,
+        `<div class="place-grid">${ATTRACTIONS.map(p => `
+          <div class="place-card">
+            <img src="${p.img}" onerror="this.src='https://placehold.co/200x150/14724f/fbf8f1?text=Place'">
+            <div class="pc-info">
+              <h6>${p.name}</h6>
+              <div class="pc-tag">${p.tag}</div>
+            </div>
+          </div>
+        `).join('')}</div>`
+      );
+      setTimeout(() => {
+        addBotMsg(`Chúc anh/chị có một chuyến đi thật đáng nhớ tại Hà Nội! 🇻🇳<br>Nếu cần thêm gì cứ nhắn cho tôi nhé. ✨`);
+        setQuickReplies(["Đặt thêm phòng cho người khác", "Đề xuất quán cà phê", "Cảm ơn"]);
+      }, 1000);
+    }, 1200);
+  }, 1100);
+}
+
+function declinePlaces() {
+  addUserMsg("Không, cảm ơn");
+  showTyping();
+  setTimeout(() => {
+    removeTyping();
+    addBotMsg(`Vâng, tôi đã hiểu. 😊<br><br>Chúc anh/chị có một <strong>trải nghiệm tuyệt vời</strong> tại khách sạn — nghỉ ngơi thoải mái và thật nhiều kỷ niệm đẹp ở thủ đô Hà Nội nhé! 🌸<br><br>Nếu có điều gì cần hỗ trợ trong suốt chuyến đi, đừng ngại quay lại trò chuyện với Smarty nhé.`);
+    setQuickReplies(["Tạm biệt"]);
+  }, 1000);
+}
+
+</script>
+</body>
+</html>

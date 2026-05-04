@@ -74,7 +74,7 @@ function fmt(n) {
                                 <strong>{{ combo.hotel_count }}</strong>
                                 <small>khách sạn phù hợp</small>
                             </div>
-                            <span class="cta-arrow">Xem chi tiết →</span>
+                            <span class="cta-book">Đặt tour ngay →</span>
                         </div>
                     </div>
                 </Link>
@@ -228,11 +228,19 @@ function fmt(n) {
 .hotel-count strong {
     color: var(--emerald-700);
 }
-.cta-arrow {
+.cta-book {
     margin-left: auto;
+    background: var(--emerald-700);
+    color: var(--cream);
+    padding: 9px 18px;
+    border-radius: 999px;
     font-size: 13px;
     font-weight: 500;
-    color: var(--emerald-700);
+    transition: background 0.2s, transform 0.2s;
+}
+.combo-list-card:hover .cta-book {
+    background: var(--emerald-900);
+    transform: translateX(2px);
 }
 
 @media (max-width: 800px) {

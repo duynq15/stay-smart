@@ -28,6 +28,10 @@ function askSmarty(combo) {
         window.dispatchEvent(new CustomEvent('staysmart:prefill-chat', { detail: { message: msg } }));
     }, 600);
 }
+
+function bookCombo() {
+    document.getElementById('combo-hotels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
 </script>
 
 <template>
@@ -49,7 +53,11 @@ function askSmarty(combo) {
                     <p class="combo-tagline">{{ combo.tagline }}</p>
                     <p class="combo-desc">{{ combo.description }}</p>
                     <div class="combo-actions">
-                        <button class="btn btn-emerald" @click="askSmarty(combo)">
+                        <button class="btn btn-emerald" @click="bookCombo">
+                            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
+                            Đặt tour ngay
+                        </button>
+                        <button class="btn btn-ghost-light" @click="askSmarty(combo)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                             Hỏi Smarty về combo này
                         </button>
@@ -89,11 +97,11 @@ function askSmarty(combo) {
                 </div>
             </div>
 
-            <div class="section-head" style="margin-top: 48px;">
+            <div id="combo-hotels" class="section-head" style="margin-top: 48px; scroll-margin-top: 100px;">
                 <div>
                     <h2>Khách sạn <em>phù hợp</em></h2>
                 </div>
-                <p>Đã lọc theo {{ combo.district }} và ngân sách combo.</p>
+                <p>Đã lọc theo {{ combo.district }} và ngân sách combo. Chọn khách sạn để đặt phòng.</p>
             </div>
 
             <div v-if="hotels.length === 0" class="empty">

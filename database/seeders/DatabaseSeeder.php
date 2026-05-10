@@ -50,6 +50,23 @@ class DatabaseSeeder extends Seeder
 
         // Phase 2: bổ sung 22 KS cho 20 scenario chatbot
         $this->call(Phase2HotelSeeder::class);
+
+        // Update VR Tour links for top 4 featured hotels
+        $vrUpdates = [
+            1 => 'https://vr360.com.vn/projects/cross-hoian/',
+            33 => 'https://vr360.com.vn/projects/winhouse-villa/',
+            3 => 'https://my.matterport.com/show/?m=R7mK9pL2qW4',
+            27 => 'https://my.matterport.com/show/?m=V8Zg6z7n1a2'
+        ];
+
+        foreach ($vrUpdates as $id => $url) {
+            $hotel = \App\Models\Hotel::find($id);
+            if ($hotel) {
+                $hotel->has_vr_tour = true;
+                $hotel->vr_tour_url = $url;
+                $hotel->save();
+            }
+        }
     }
 
     private function prepareForSqlite(string $sql): string

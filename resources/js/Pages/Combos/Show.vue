@@ -28,10 +28,6 @@ function askSmarty(combo) {
         window.dispatchEvent(new CustomEvent('staysmart:prefill-chat', { detail: { message: msg } }));
     }, 600);
 }
-
-function bookCombo() {
-    document.getElementById('combo-hotels')?.scrollIntoView({ behavior: 'smooth', block: 'start' });
-}
 </script>
 
 <template>
@@ -53,10 +49,10 @@ function bookCombo() {
                     <p class="combo-tagline">{{ combo.tagline }}</p>
                     <p class="combo-desc">{{ combo.description }}</p>
                     <div class="combo-actions">
-                        <button class="btn btn-emerald" @click="bookCombo">
+                        <Link :href="route('booking.combo.create', combo.slug)" class="btn btn-emerald">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M5 12h14" /><path d="m12 5 7 7-7 7" /></svg>
                             Đặt tour ngay
-                        </button>
+                        </Link>
                         <button class="btn btn-ghost-light" @click="askSmarty(combo)">
                             <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path d="M21 15a2 2 0 0 1-2 2H7l-4 4V5a2 2 0 0 1 2-2h14a2 2 0 0 1 2 2z" /></svg>
                             Hỏi Smarty về combo này

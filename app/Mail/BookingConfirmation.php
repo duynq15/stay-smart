@@ -17,8 +17,10 @@ class BookingConfirmation extends Mailable
 
     public function envelope(): Envelope
     {
+        $label = $this->booking->booking_type === 'combo' ? 'đặt tour' : 'đặt phòng';
+
         return new Envelope(
-            subject: "STAY-SMART · Xác nhận đặt phòng {$this->booking->booking_code}",
+            subject: "STAY-SMART · Xác nhận {$label} {$this->booking->booking_code}",
         );
     }
 
@@ -30,6 +32,7 @@ class BookingConfirmation extends Mailable
                 'booking' => $this->booking,
                 'hotel' => $this->booking->hotel,
                 'room' => $this->booking->room,
+                'combo' => $this->booking->combo(),
                 'payment' => $this->booking->payment,
             ],
         );

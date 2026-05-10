@@ -48,24 +48,27 @@ function fmt(n) {
             </div>
 
             <div class="combo-list-grid">
-                <Link
+                <article
                     v-for="combo in combos"
                     :key="combo.slug"
-                    :href="route('combos.show', combo.slug)"
                     class="combo-list-card"
                 >
-                    <div class="img-wrap">
-                        <img :src="combo.image" :alt="combo.title" @error="$event.target.src = `https://placehold.co/900x600/14724f/fbf8f1?text=${encodeURIComponent(combo.title)}`" />
-                        <div class="duration-badge">{{ combo.duration }}</div>
-                    </div>
-                    <div class="info">
-                        <span class="district-tag">📍 {{ combo.district }}</span>
-                        <h3>{{ combo.title }}</h3>
-                        <p class="desc">{{ combo.description }}</p>
-                        <ul v-if="combo.highlights?.length" class="highlights">
-                            <li v-for="(h, i) in combo.highlights.slice(0, 3)" :key="i">{{ h }}</li>
-                        </ul>
-                        <div class="meta">
+                    <Link :href="route('combos.show', combo.slug)" class="card-explore">
+                        <div class="img-wrap">
+                            <img :src="combo.image" :alt="combo.title" @error="$event.target.src = `https://placehold.co/900x600/14724f/fbf8f1?text=${encodeURIComponent(combo.title)}`" />
+                            <div class="duration-badge">{{ combo.duration }}</div>
+                        </div>
+                        <div class="info">
+                            <span class="district-tag">📍 {{ combo.district }}</span>
+                            <h3>{{ combo.title }}</h3>
+                            <p class="desc">{{ combo.description }}</p>
+                            <ul v-if="combo.highlights?.length" class="highlights">
+                                <li v-for="(h, i) in combo.highlights.slice(0, 3)" :key="i">{{ h }}</li>
+                            </ul>
+                        </div>
+                    </Link>
+                    <div class="card-foot">
+                        <div class="card-foot-meta">
                             <div>
                                 <small>Từ</small>
                                 <strong>{{ fmt(combo.from_price) }}đ</strong>
@@ -74,10 +77,13 @@ function fmt(n) {
                                 <strong>{{ combo.hotel_count }}</strong>
                                 <small>khách sạn phù hợp</small>
                             </div>
-                            <span class="cta-book">Đặt tour ngay →</span>
+                        </div>
+                        <div class="card-foot-actions">
+                            <Link :href="route('combos.show', combo.slug)" class="btn-detail">Chi tiết</Link>
+                            <Link :href="route('booking.combo.create', combo.slug)" class="cta-book">Đặt tour ngay →</Link>
                         </div>
                     </div>
-                </Link>
+                </article>
             </div>
         </section>
     </AppLayout>
@@ -127,13 +133,16 @@ function fmt(n) {
     overflow: hidden;
     box-shadow: var(--shadow-sm);
     transition: transform 0.25s, box-shadow 0.25s, border-color 0.25s;
-    display: grid;
-    grid-template-columns: 380px 1fr;
 }
 .combo-list-card:hover {
     transform: translateY(-3px);
     box-shadow: var(--shadow-lg);
     border-color: var(--emerald-300);
+}
+.card-explore {
+    display: grid;
+    grid-template-columns: 380px 1fr;
+    color: inherit;
 }
 .combo-list-card .img-wrap {
     position: relative;
@@ -204,22 +213,29 @@ function fmt(n) {
     border-radius: 999px;
     color: var(--ink-700);
 }
-.meta {
+.card-foot {
     display: flex;
     align-items: center;
-    gap: 28px;
-    padding-top: 16px;
+    justify-content: space-between;
+    gap: 24px;
+    padding: 16px 32px 22px;
     border-top: 1px dashed rgba(11, 20, 16, 0.1);
     flex-wrap: wrap;
 }
-.meta small {
+.card-foot-meta {
+    display: flex;
+    align-items: center;
+    gap: 28px;
+    flex-wrap: wrap;
+}
+.card-foot small {
     display: block;
     font-size: 11px;
     color: var(--ink-500);
     text-transform: uppercase;
     letter-spacing: 0.04em;
 }
-.meta strong {
+.card-foot strong {
     font-family: var(--serif);
     font-size: 20px;
     font-weight: 600;
@@ -228,8 +244,25 @@ function fmt(n) {
 .hotel-count strong {
     color: var(--emerald-700);
 }
+.card-foot-actions {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+}
+.btn-detail {
+    padding: 9px 16px;
+    border-radius: 999px;
+    font-size: 13px;
+    font-weight: 500;
+    color: var(--ink-700);
+    border: 1px solid rgba(11, 20, 16, 0.12);
+    transition: border-color 0.2s, color 0.2s;
+}
+.btn-detail:hover {
+    border-color: var(--emerald-700);
+    color: var(--emerald-700);
+}
 .cta-book {
-    margin-left: auto;
     background: var(--emerald-700);
     color: var(--cream);
     padding: 9px 18px;
@@ -238,17 +271,20 @@ function fmt(n) {
     font-weight: 500;
     transition: background 0.2s, transform 0.2s;
 }
-.combo-list-card:hover .cta-book {
+.cta-book:hover {
     background: var(--emerald-900);
     transform: translateX(2px);
 }
 
 @media (max-width: 800px) {
-    .combo-list-card {
+    .card-explore {
         grid-template-columns: 1fr;
     }
     .combo-list-card .img-wrap {
         aspect-ratio: 16/9;
+    }
+    .card-foot {
+        padding: 14px 20px 18px;
     }
 }
 </style>

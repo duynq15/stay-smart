@@ -11,25 +11,54 @@
             <div style="font-size: 13px; color: #6ed1a8; margin-top: 4px;">Trợ lý đặt phòng AI · Hà Nội</div>
         </div>
         <div style="padding: 32px;">
+            @php($isCombo = $booking->booking_type === 'combo')
             <h1 style="font-size: 24px; font-weight: 500; margin: 0 0 8px;">Xin chào {{ $booking->guest_name }},</h1>
-            <p style="font-size: 15px; color: #4a5751; margin: 0 0 24px; line-height: 1.6;">Đặt phòng của bạn đã được xác nhận thành công. Dưới đây là chi tiết đơn:</p>
+            <p style="font-size: 15px; color: #4a5751; margin: 0 0 24px; line-height: 1.6;">{{ $isCombo ? 'Đặt tour combo' : 'Đặt phòng' }} của bạn đã được xác nhận thành công. Dưới đây là chi tiết đơn:</p>
 
             <div style="background: #14724f; color: #fbf8f1; padding: 16px 20px; border-radius: 12px; text-align: center; margin-bottom: 24px;">
-                <div style="font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em;">Mã đặt phòng</div>
+                <div style="font-size: 11px; opacity: 0.7; text-transform: uppercase; letter-spacing: 0.05em;">Mã {{ $isCombo ? 'đặt tour' : 'đặt phòng' }}</div>
                 <div style="font-size: 26px; font-weight: 600; letter-spacing: 0.05em; margin-top: 4px;">{{ $booking->booking_code }}</div>
             </div>
 
             <table style="width: 100%; border-collapse: collapse; margin-bottom: 20px;">
+                @if($isCombo && $combo)
+                <tr>
+                    <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #d8ddd8;">
+                        <strong style="font-size: 18px;">{{ $combo['title'] }}</strong><br>
+                        <small style="color: #4a5751;">{{ $combo['district'] }} · {{ $combo['duration'] }}</small>
+                    </td>
+                </tr>
+                @if($hotel)
+                <tr>
+                    <td style="padding: 12px 0; color: #4a5751; font-size: 13px; width: 50%;">Khách sạn lưu trú</td>
+                    <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $hotel->name }}</td>
+                </tr>
+                @endif
+                <tr>
+                    <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Khởi hành</td>
+                    <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $booking->checkin_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Kết thúc</td>
+                    <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $booking->checkout_date->format('d/m/Y') }}</td>
+                </tr>
+                <tr>
+                    <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Số đêm · Số khách</td>
+                    <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $booking->nights }} đêm · {{ $booking->guests_count }} khách</td>
+                </tr>
+                @elseif($hotel)
                 <tr>
                     <td colspan="2" style="padding: 8px 0; border-bottom: 1px solid #d8ddd8;">
                         <strong style="font-size: 18px;">{{ $hotel->name }}</strong><br>
                         <small style="color: #4a5751;">{{ $hotel->address }}</small>
                     </td>
                 </tr>
+                @if($room)
                 <tr>
                     <td style="padding: 12px 0; color: #4a5751; font-size: 13px; width: 50%;">Loại phòng</td>
                     <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $room->name }}</td>
                 </tr>
+                @endif
                 <tr>
                     <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Nhận phòng</td>
                     <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $booking->checkin_date->format('d/m/Y') }}</td>
@@ -42,6 +71,7 @@
                     <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Số đêm · Số khách</td>
                     <td style="padding: 12px 0; font-weight: 500; text-align: right;">{{ $booking->nights }} đêm · {{ $booking->guests_count }} khách</td>
                 </tr>
+                @endif
                 @if($payment)
                 <tr>
                     <td style="padding: 12px 0; color: #4a5751; font-size: 13px;">Phương thức thanh toán</td>
@@ -56,7 +86,7 @@
 
             <div style="background: #efe9dc; padding: 16px 20px; border-radius: 12px;">
                 <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; color: #4a5751;">
-                    <span>Tạm tính ({{ $booking->nights }} đêm)</span>
+                    <span>Tạm tính ({{ $isCombo ? $booking->guests_count . ' khách' : $booking->nights . ' đêm' }})</span>
                     <span>{{ number_format($booking->subtotal, 0, ',', '.') }}đ</span>
                 </div>
                 <div style="display: flex; justify-content: space-between; padding: 4px 0; font-size: 14px; color: #4a5751;">

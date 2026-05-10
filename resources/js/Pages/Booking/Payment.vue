@@ -28,7 +28,7 @@ function submit() {
 </script>
 
 <template>
-    <Head title="Thanh toán đặt phòng" />
+    <Head :title="booking.booking_type === 'combo' ? 'Thanh toán đặt tour' : 'Thanh toán đặt phòng'" />
     <AppLayout :show-chat="false">
         <section class="results-page active" style="max-width: 1280px; margin: 0 auto; padding: 30px 32px 60px;">
             <div class="section-head">
@@ -94,12 +94,20 @@ function submit() {
 
                 <div class="checkout-summary">
                     <h3>Đơn của bạn</h3>
-                    <div class="summary-hotel">
+                    <div v-if="booking.booking_type === 'combo' && booking.combo" class="summary-hotel">
+                        <img :src="booking.combo.image" :alt="booking.combo.title" />
+                        <div>
+                            <h4>{{ booking.combo.title }}</h4>
+                            <small>{{ booking.combo.district }} · {{ booking.combo.duration }}</small><br>
+                            <small style="color: var(--emerald-700); font-weight: 500;">Combo trọn gói</small>
+                        </div>
+                    </div>
+                    <div v-else-if="booking.hotel" class="summary-hotel">
                         <img :src="booking.hotel.image" :alt="booking.hotel.name" />
                         <div>
                             <h4>{{ booking.hotel.name }}</h4>
                             <small>{{ booking.hotel.district }}</small><br>
-                            <small style="color: var(--emerald-700); font-weight: 500;">{{ booking.room.name }}</small>
+                            <small v-if="booking.room" style="color: var(--emerald-700); font-weight: 500;">{{ booking.room.name }}</small>
                         </div>
                     </div>
                     <div class="summary-row">
@@ -107,12 +115,12 @@ function submit() {
                         <span>{{ booking.guest_name }}</span>
                     </div>
                     <div class="summary-row">
-                        <span>Nhận / Trả</span>
+                        <span>{{ booking.booking_type === 'combo' ? 'Khởi hành / Kết thúc' : 'Nhận / Trả' }}</span>
                         <span>{{ booking.checkin_date }} → {{ booking.checkout_date }}</span>
                     </div>
                     <div class="summary-row">
-                        <span>Số đêm</span>
-                        <span>{{ booking.nights }}</span>
+                        <span>{{ booking.booking_type === 'combo' ? 'Số đêm · Khách' : 'Số đêm' }}</span>
+                        <span>{{ booking.nights }}{{ booking.booking_type === 'combo' ? ` · ${booking.guests_count} khách` : '' }}</span>
                     </div>
                     <div class="summary-row">
                         <span>Tạm tính</span>

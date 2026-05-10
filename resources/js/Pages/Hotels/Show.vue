@@ -75,10 +75,19 @@ function bookRoom(roomId) {
             </div>
 
             <div v-if="showVR" class="vr-frame">
-                <div class="vr-placeholder">
+                <iframe
+                    v-if="hotel.vr_tour_url"
+                    :src="hotel.vr_tour_url"
+                    class="vr-iframe"
+                    allow="fullscreen; xr-spatial-tracking; accelerometer; gyroscope"
+                    allowfullscreen
+                    loading="lazy"
+                    :title="`VR Tour 360° — ${hotel.name}`"
+                ></iframe>
+                <div v-else class="vr-placeholder">
                     <div class="vr-icon">🥽</div>
                     <h3>VR Tour 360°</h3>
-                    <p>Demo placeholder — tích hợp Pannellum/Marzipano hoặc Google Street View Embed API ở đây.</p>
+                    <p>Đang chuẩn bị dữ liệu VR cho khách sạn này. Vui lòng quay lại sau.</p>
                     <p class="vr-coords" v-if="hotel.lat">📍 {{ hotel.lat }}, {{ hotel.lng }}</p>
                 </div>
             </div>
@@ -179,7 +188,14 @@ function bookRoom(roomId) {
     overflow: hidden;
     background: linear-gradient(135deg, #0a3d2e, #14724f);
     aspect-ratio: 16/9;
-    max-height: 380px;
+    max-height: 480px;
+}
+.vr-iframe {
+    width: 100%;
+    height: 100%;
+    border: 0;
+    display: block;
+    background: #000;
 }
 .vr-placeholder {
     height: 100%;

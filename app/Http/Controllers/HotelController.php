@@ -99,6 +99,7 @@ class HotelController extends Controller
                 'description' => $hotel->description,
                 'amenities' => $hotel->amenities ?? [],
                 'has_vr_tour' => $hotel->has_vr_tour,
+                'vr_tour_url' => $hotel->vr_tour_url,
                 'phone' => $hotel->phone,
                 'email' => $hotel->email,
                 'images' => $hotel->images->map(fn ($i) => [
@@ -119,4 +120,5 @@ class HotelController extends Controller
             ],
         ]);
     }
+
 }

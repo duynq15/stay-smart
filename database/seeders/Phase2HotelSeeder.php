@@ -34,6 +34,7 @@ class Phase2HotelSeeder extends Seeder
                     'phone' => $h['phone'] ?? '0241000000',
                     'email' => $h['email'] ?? 'info@example.vn',
                     'has_vr_tour' => $h['has_vr_tour'] ?? false,
+                    'vr_tour_url' => $h['vr_tour_url'] ?? null,
                     'is_active' => true,
                     'created_at' => now(),
                     'updated_at' => now(),

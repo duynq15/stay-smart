@@ -19,18 +19,18 @@ function fmt(n) {
 </script>
 
 <template>
-    <Head title="Đơn đặt phòng của tôi" />
+    <Head title="Đơn của tôi" />
     <AppLayout>
         <section class="results-page active" style="max-width: 1080px; margin: 0 auto; padding: 30px 32px 60px;">
             <div class="section-head">
                 <div>
-                    <h2>Đơn <em>đặt phòng</em> của tôi</h2>
+                    <h2>Đơn <em>đặt chỗ</em> của tôi</h2>
                 </div>
-                <p>{{ bookings.total }} đơn đặt phòng</p>
+                <p>{{ bookings.total }} đơn (khách sạn + tour combo)</p>
             </div>
 
             <div v-if="bookings.data.length === 0" class="empty-bookings">
-                <p>Chưa có đơn đặt phòng nào.</p>
+                <p>Chưa có đơn đặt nào.</p>
                 <Link :href="route('hotels.index')" class="btn btn-emerald" style="margin-top: 16px;">Tìm khách sạn ngay</Link>
             </div>
 
@@ -39,15 +39,24 @@ function fmt(n) {
                     <div class="booking-main">
                         <div class="booking-header">
                             <div>
-                                <h3>{{ b.hotel.name }}</h3>
-                                <small>{{ b.hotel.district }} · {{ b.room.name }}</small>
+                                <span class="type-badge" :class="b.booking_type === 'combo' ? 'tb-combo' : 'tb-hotel'">
+                                    {{ b.booking_type === 'combo' ? 'Tour combo' : 'Khách sạn' }}
+                                </span>
+                                <h3 v-if="b.booking_type === 'combo'">{{ b.combo?.title || 'Combo tour' }}</h3>
+                                <h3 v-else>{{ b.hotel?.name || '—' }}</h3>
+                                <small v-if="b.booking_type === 'combo'">
+                                    {{ b.combo?.district || '' }}{{ b.combo?.duration ? ` · ${b.combo.duration}` : '' }}
+                                </small>
+                                <small v-else>
+                                    {{ b.hotel?.district || '' }}{{ b.room?.name ? ` · ${b.room.name}` : '' }}
+                                </small>
                             </div>
                             <span class="status-badge" :class="statusLabel[b.status].class">{{ statusLabel[b.status].label }}</span>
                         </div>
                         <div class="booking-meta">
                             <div><label>Mã đơn</label><strong>{{ b.booking_code }}</strong></div>
-                            <div><label>Nhận phòng</label><strong>{{ b.checkin_date }}</strong></div>
-                            <div><label>Trả phòng</label><strong>{{ b.checkout_date }}</strong></div>
+                            <div><label>{{ b.booking_type === 'combo' ? 'Khởi hành' : 'Nhận phòng' }}</label><strong>{{ b.checkin_date }}</strong></div>
+                            <div><label>{{ b.booking_type === 'combo' ? 'Kết thúc' : 'Trả phòng' }}</label><strong>{{ b.checkout_date }}</strong></div>
                             <div><label>Tổng</label><strong>{{ fmt(b.total_amount) }}đ</strong></div>
                         </div>
                     </div>
@@ -120,6 +129,19 @@ function fmt(n) {
 .st-confirmed { background: rgba(31, 155, 106, 0.15); color: var(--emerald-900); }
 .st-completed { background: rgba(11, 20, 16, 0.08); color: var(--ink-700); }
 .st-cancelled { background: rgba(184, 92, 60, 0.15); color: var(--rust); }
+
+.type-badge {
+    display: inline-block;
+    font-size: 10px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 3px 9px;
+    border-radius: 999px;
+    margin-bottom: 6px;
+}
+.tb-hotel { background: rgba(11, 20, 16, 0.06); color: var(--ink-700); }
+.tb-combo { background: rgba(31, 155, 106, 0.12); color: var(--emerald-900); }
 
 .booking-meta {
     display: grid;

@@ -40,10 +40,12 @@ Route::middleware('guest')->group(function () {
 Route::post('/logout', [AuthController::class, 'logout'])->middleware('auth')->name('logout');
 
 Route::get('/booking/create', [BookingController::class, 'create'])->name('booking.create');
+Route::get('/booking/combo/{slug}/create', [BookingController::class, 'createCombo'])->name('booking.combo.create');
 
 Route::middleware('auth')->group(function () {
     Route::get('/bookings', [BookingController::class, 'index'])->name('bookings.index');
     Route::post('/booking', [BookingController::class, 'store'])->name('booking.store');
+    Route::post('/booking/combo', [BookingController::class, 'storeCombo'])->name('booking.combo.store');
     Route::get('/booking/{booking:booking_code}/payment', [BookingController::class, 'payment'])->name('booking.payment');
     Route::post('/booking/{booking:booking_code}/payment', [BookingController::class, 'processPayment'])->name('booking.process');
     Route::get('/booking/{booking:booking_code}/confirmation', [BookingController::class, 'confirmation'])->name('booking.confirmation');

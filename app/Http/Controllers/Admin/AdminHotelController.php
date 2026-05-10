@@ -109,6 +109,7 @@ class AdminHotelController extends Controller
                 'phone' => $hotel->phone,
                 'email' => $hotel->email,
                 'has_vr_tour' => (bool) $hotel->has_vr_tour,
+                'vr_tour_url' => $hotel->vr_tour_url,
                 'is_active' => (bool) $hotel->is_active,
                 'rooms_count' => $hotel->rooms()->count(),
                 'bookings_count' => $hotel->bookings()->count(),
@@ -218,6 +219,7 @@ class AdminHotelController extends Controller
             'phone' => ['nullable', 'string', 'max:20'],
             'email' => ['nullable', 'email', 'max:150'],
             'has_vr_tour' => ['boolean'],
+            'vr_tour_url' => ['nullable', 'url', 'max:500'],
             'is_active' => ['boolean'],
         ]);
     }

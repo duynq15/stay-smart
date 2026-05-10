@@ -9,13 +9,27 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 use Illuminate\Database\Eloquent\Relations\HasOne;
 
 #[Fillable([
-    'booking_code', 'user_id', 'hotel_id', 'room_id', 'guest_name',
-    'guest_email', 'guest_phone', 'checkin_date', 'checkout_date', 'nights',
-    'guests_count', 'subtotal', 'tax', 'total_amount', 'status',
-    'special_requests',
+    'booking_code', 'user_id', 'hotel_id', 'room_id', 'combo_slug',
+    'booking_type', 'guest_name', 'guest_email', 'guest_phone',
+    'checkin_date', 'checkout_date', 'nights', 'guests_count',
+    'subtotal', 'tax', 'total_amount', 'status', 'special_requests',
 ])]
 class Booking extends Model
 {
+    public function isCombo(): bool
+    {
+        return $this->booking_type === 'combo';
+    }
+
+    public function combo(): ?array
+    {
+        if (! $this->combo_slug) {
+            return null;
+        }
+
+        return collect(config('combos'))->firstWhere('slug', $this->combo_slug);
+    }
+
     protected function casts(): array
     {
         return [

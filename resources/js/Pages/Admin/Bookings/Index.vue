@@ -62,8 +62,8 @@ function changeStatus(b, newStatus) {
                         <tr>
                             <th>Mã đơn</th>
                             <th>Khách</th>
-                            <th>Khách sạn / Phòng</th>
-                            <th>Nhận / Trả</th>
+                            <th>Loại / Sản phẩm</th>
+                            <th>Bắt đầu / Kết thúc</th>
                             <th>Đêm · Khách</th>
                             <th>Tổng</th>
                             <th>Thanh toán</th>
@@ -74,7 +74,17 @@ function changeStatus(b, newStatus) {
                         <tr v-for="b in bookings.data" :key="b.id">
                             <td><strong>{{ b.booking_code }}</strong><br><small style="color: var(--ink-500)">{{ b.created_at }}</small></td>
                             <td>{{ b.guest_name }}<br><small style="color: var(--ink-500)">{{ b.guest_email }}</small></td>
-                            <td>{{ b.hotel.name }}<br><small style="color: var(--ink-500)">{{ b.room.name }}</small></td>
+                            <td>
+                                <span class="type-pill" :class="b.booking_type === 'combo' ? 'tp-combo' : 'tp-hotel'">{{ b.booking_type === 'combo' ? 'Combo' : 'KS' }}</span>
+                                <template v-if="b.booking_type === 'combo'">
+                                    <strong>{{ b.combo?.title || '—' }}</strong><br>
+                                    <small style="color: var(--ink-500)">{{ b.combo?.district || '' }}{{ b.hotel ? ` · ${b.hotel.name}` : '' }}</small>
+                                </template>
+                                <template v-else>
+                                    {{ b.hotel?.name || '—' }}<br>
+                                    <small style="color: var(--ink-500)">{{ b.room?.name || '' }}</small>
+                                </template>
+                            </td>
                             <td>{{ b.checkin_date }}<br>→ {{ b.checkout_date }}</td>
                             <td>{{ b.nights }} đêm<br>{{ b.guests_count }} khách</td>
                             <td style="font-weight: 500">{{ fmt(b.total_amount) }}đ</td>
@@ -124,4 +134,16 @@ function changeStatus(b, newStatus) {
     font-weight: 500;
     cursor: pointer;
 }
+.type-pill {
+    display: inline-block;
+    font-size: 9px;
+    font-weight: 600;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 2px 7px;
+    border-radius: 999px;
+    margin-right: 6px;
+}
+.tp-hotel { background: rgba(11, 20, 16, 0.06); color: var(--ink-700); }
+.tp-combo { background: rgba(31, 155, 106, 0.12); color: var(--emerald-900); }
 </style>

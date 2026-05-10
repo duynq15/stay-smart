@@ -23,6 +23,7 @@ const form = useForm({
     phone: props.hotel?.phone || '',
     email: props.hotel?.email || '',
     has_vr_tour: props.hotel?.has_vr_tour || false,
+    vr_tour_url: props.hotel?.vr_tour_url || '',
     is_active: props.hotel?.is_active !== false,
     images: [], // for create mode: array of pending {url, caption, is_primary}
 });
@@ -328,6 +329,23 @@ const districts = ['Hoàn Kiếm', 'Tây Hồ', 'Ba Đình', 'Cầu Giấy', 'Ha
                             <input type="checkbox" v-model="form.is_active" />
                             <span>Hoạt động (hiển thị trên trang user)</span>
                         </label>
+                    </div>
+
+                    <div v-if="form.has_vr_tour" class="form-field full" :class="{ 'has-error': touched.vr_tour_url && errorOf('vr_tour_url') }">
+                        <label>URL VR Tour <small style="color: var(--ink-500); font-weight: 400;">(Matterport / Kuula / iframe của KS)</small></label>
+                        <input
+                            type="url"
+                            v-model="form.vr_tour_url"
+                            @blur="markTouched('vr_tour_url')"
+                            placeholder="https://my.matterport.com/show/?m=..."
+                        />
+                        <small v-if="touched.vr_tour_url && errorOf('vr_tour_url')" class="err">⚠ {{ errorOf('vr_tour_url') }}</small>
+                        <small v-else style="color: var(--ink-500); line-height: 1.5;">
+                            Dán URL embed VR thật của khách sạn này. Ví dụ:
+                            <code>https://my.matterport.com/show/?m=XXXXX</code> hoặc
+                            <code>https://kuula.co/share/...</code>.
+                            Nếu để trống, trang user sẽ hiển thị "VR đang được chuẩn bị".
+                        </small>
                     </div>
                 </div>
 

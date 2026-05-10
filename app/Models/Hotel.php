@@ -9,7 +9,7 @@ use Illuminate\Database\Eloquent\Relations\HasMany;
 #[Fillable([
     'name', 'slug', 'district', 'address', 'lat', 'lng', 'stars', 'base_price',
     'rating', 'reviews_count', 'description', 'amenities', 'phone', 'email',
-    'has_vr_tour', 'is_active',
+    'has_vr_tour', 'vr_tour_url', 'is_active',
 ])]
 class Hotel extends Model
 {

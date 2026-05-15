@@ -5,6 +5,7 @@ namespace Database\Seeders;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Hash;
 
 class DatabaseSeeder extends Seeder
 {
@@ -47,6 +48,23 @@ class DatabaseSeeder extends Seeder
         }
 
         $this->command->info('Seeded ' . count($statements) . ' SQL statements from staysmart_seed.sql');
+
+        // The seed SQL omits the password column, so all seeded users would otherwise
+        // hold the column DEFAULT — which on older installs was a malformed bcrypt
+        // string that triggered "This password does not use the Bcrypt algorithm" at
+        // login. Backfill any user whose hash isn't a real bcrypt with Hash::make('password').
+        $passwordHash = Hash::make('password');
+        $backfilled = 0;
+        foreach (DB::table('users')->select('id', 'password')->get() as $row) {
+            $info = password_get_info($row->password);
+            if (($info['algoName'] ?? 'unknown') !== 'bcrypt') {
+                DB::table('users')->where('id', $row->id)->update(['password' => $passwordHash]);
+                $backfilled++;
+            }
+        }
+        if ($backfilled > 0) {
+            $this->command->info("Backfilled valid bcrypt password ('password') for {$backfilled} seeded users.");
+        }
 
         // Phase 2: bổ sung 22 KS cho 20 scenario chatbot
         $this->call(Phase2HotelSeeder::class);

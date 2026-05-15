@@ -17,7 +17,9 @@ return new class extends Migration
             $table->string('email', 150)->unique();
             $table->string('phone', 20)->nullable();
             $table->timestamp('email_verified_at')->nullable();
-            $table->string('password')->default('$2y$12$dummyhashfortestingonly0000000000000000000000000000000');
+            // Valid bcrypt hash of the literal string "password" (cost 12). Allows seed
+            // SQL that omits the password column to still produce a usable login.
+            $table->string('password')->default('$2y$12$p..YK17O4pMC7eRL1T8V0u0efk1MAUGfnCMAYg8vSYPAMivxUdzKa');
             $table->enum('role', ['customer', 'admin'])->default('customer');
             $table->string('avatar')->nullable();
             $table->rememberToken();

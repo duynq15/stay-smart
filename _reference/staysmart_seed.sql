@@ -29,7 +29,7 @@ CREATE TABLE `users` (
   `name` VARCHAR(120) NOT NULL,
   `email` VARCHAR(150) NOT NULL UNIQUE,
   `phone` VARCHAR(20) DEFAULT NULL,
-  `password` VARCHAR(255) NOT NULL DEFAULT '$2y$12$dummyhashfortestingonly0000000000000000000000000000000',
+  `password` VARCHAR(255) NOT NULL DEFAULT '$2y$12$p..YK17O4pMC7eRL1T8V0u0efk1MAUGfnCMAYg8vSYPAMivxUdzKa', -- bcrypt('password')
   `role` ENUM('customer','admin') NOT NULL DEFAULT 'customer',
   `avatar` VARCHAR(255) DEFAULT NULL,
   `email_verified_at` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,

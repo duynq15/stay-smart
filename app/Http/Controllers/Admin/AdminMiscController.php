@@ -30,8 +30,8 @@ class AdminMiscController extends Controller
             'rating' => $r->rating,
             'comment' => $r->comment,
             'created_at' => $r->created_at?->format('Y-m-d'),
-            'user' => ['name' => $r->user->name, 'avatar' => $r->user->avatar],
-            'hotel' => ['name' => $r->hotel->name],
+            'user' => $r->user ? ['name' => $r->user->name, 'avatar' => $r->user->avatar] : ['name' => 'N/A', 'avatar' => null],
+            'hotel' => $r->hotel ? ['name' => $r->hotel->name] : ['name' => 'N/A'],
         ]);
 
         return Inertia::render('Admin/Reviews/Index', [

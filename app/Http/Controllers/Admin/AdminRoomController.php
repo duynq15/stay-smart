@@ -42,7 +42,7 @@ class AdminRoomController extends Controller
             'capacity' => $r->capacity,
             'available_units' => $r->available_units,
             'is_active' => $r->is_active,
-            'hotel' => ['id' => $r->hotel->id, 'name' => $r->hotel->name, 'district' => $r->hotel->district],
+            'hotel' => $r->hotel ? ['id' => $r->hotel->id, 'name' => $r->hotel->name, 'district' => $r->hotel->district] : ['id' => null, 'name' => 'N/A', 'district' => 'N/A'],
         ]);
 
         return Inertia::render('Admin/Rooms/Index', [

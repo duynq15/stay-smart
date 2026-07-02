@@ -73,7 +73,7 @@ class AdminDashboardController extends Controller
             ->map(fn ($b) => [
                 'booking_code' => $b->booking_code,
                 'guest_name' => $b->guest_name,
-                'hotel_name' => $b->hotel->name,
+                'hotel_name' => $b->hotel?->name ?? 'N/A',
                 'checkin_date' => $b->checkin_date->format('d/m'),
                 'checkout_date' => $b->checkout_date->format('d/m'),
                 'total_amount' => $b->total_amount,
